@@ -1,0 +1,22 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: node-js
+  labels:
+    name: node-js
+    #deployment: demo
+spec:
+  replicas: 3
+  selector:
+    name: node-js
+    #deployment: demo
+  template:
+    metadata:
+      labels:
+        name: node-js
+    spec:
+      containers:
+      - name: node-js
+        image: jonbaier/node-express-info:latest
+        ports:
+        - containerPort: 80
