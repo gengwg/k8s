@@ -1,0 +1,26 @@
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: node-js-labels
+  labels:
+    name: node-js-labels
+    app: node-js-express
+    deployment: test
+spec:
+  replicas: 3
+  selector:
+    name: node-js-labels
+    deployment: test
+    app: node-js-express
+  template:
+    metadata:
+      labels:
+        name: node-js-labels
+        deployment: test
+        app: node-js-express
+    spec:
+      containers:
+      - name: node-js-labels
+        image: jonbaier/node-express-info:latest
+        ports:
+        - containerPort: 80

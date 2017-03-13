@@ -1,0 +1,28 @@
+# Usage: kubectl replace -f nodejs-health-controller.yaml
+kind: ReplicationController
+apiVersion: v1
+metadata:
+  name: node-js
+  labels:
+    name: node-js
+spec:
+  replicas: 3
+  selector:
+    name: node-js
+  template:
+    metadata:
+      labels:
+        name: node-js
+    spec:
+      containers:
+      - name: node-js
+        image: jonbaier/node-express-info:latest
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          # An HTTP health check
+          httpGet:
+            path: /status/
+            port: 80
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
