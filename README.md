@@ -38,3 +38,17 @@ KubeDNS is running at https://127.0.0.1:32768/api/v1/namespaces/kube-system/serv
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
+
+### Alpline hello world example
+
+```
+$ kubectl apply -f alpine2.yml
+pod/alpine created
+$ kubectl get pods
+NAME     READY   STATUS    RESTARTS   AGE
+alpine   1/1     Running   0          6s
+$ kubectl delete -f alpine2.yml
+pod "alpine" deleted
+$ kubectl get pods
+No resources found.
+```
