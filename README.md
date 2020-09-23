@@ -11,7 +11,13 @@ Kubernetes run times
 Kind is a tool for running local Kubernetes clusters using Docker container “nodes”.
 
 ```
+# on Mac
 brew install kind
+
+# on Linux
+curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
+chmod +x ./kind
+mv ./kind ~/bin/kind
 
 $ kind create cluster
 Creating cluster "kind" ...
@@ -37,7 +43,15 @@ Kubernetes master is running at https://127.0.0.1:32768
 KubeDNS is running at https://127.0.0.1:32768/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+$ kubectl get nodes
+NAME                 STATUS     ROLES    AGE   VERSION
+kind-control-plane   NotReady   master   48s   v1.19.1
+$ kubectl get nodes
+NAME                 STATUS   ROLES    AGE   VERSION
+kind-control-plane   Ready    master   62s   v1.19.1
 ```
+
 
 ### Alpline hello world example
 
