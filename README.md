@@ -66,3 +66,15 @@ pod "alpine" deleted
 $ kubectl get pods
 No resources found.
 ```
+
+## Usage
+
+### Watch a command using -w
+
+```
+$ kubectl get jobs -w
+NAME               COMPLETIONS   DURATION   AGE
+hello-1600848720   1/1           3s         18h
+hello-1600848780   1/1           3s         18h
+hello-1600848840   1/1           3s         18h
+```
