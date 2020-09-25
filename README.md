@@ -78,3 +78,41 @@ hello-1600848720   1/1           3s         18h
 hello-1600848780   1/1           3s         18h
 hello-1600848840   1/1           3s         18h
 ```
+
+### Deploy Prometheus Server and Grafana
+
+#### Prometheus
+
+```
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.35.0/deploy/static/provider/cloud/deploy.yaml
+$ kubectl apply --kustomize github.com/kubernetes/ingress-nginx/deploy/prometheus/
+$ kubectl get svc -n ingress-nginx
+NAME                                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller             LoadBalancer   10.99.49.219     <pending>     80:31951/TCP,443:31670/TCP   8m36s
+ingress-nginx-controller-admission   ClusterIP      10.104.101.132   <none>        443/TCP                      8m36s
+prometheus-server                    NodePort       10.103.255.197   <none>        9090:31915/TCP               4m29s
+$ kubectl get nodes --selector=kubernetes.io/role!=master -o jsonpath={.items[*].status.addresses[?\(@.type==\"InternalIP\"\)].address}
+172.18.0.2
+```
+
+Then in browser go to:
+
+http://172.18.0.2:31915/graph
+
+#### Grafana
+
+```
+$ kubectl get svc -n ingress-nginx
+NAME                                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+grafana                              NodePort       10.97.25.250     <none>        3000:30552/TCP               2m44s
+ingress-nginx-controller             LoadBalancer   10.99.49.219     <pending>     80:31951/TCP,443:31670/TCP   14m
+ingress-nginx-controller-admission   ClusterIP      10.104.101.132   <none>        443/TCP                      14m
+prometheus-server                    NodePort       10.103.255.197   <none>        9090:31915/TCP               10m
+```
+
+Then in browser go to:
+
+http://172.18.0.2:30552
+
+The username and password is admin
+
