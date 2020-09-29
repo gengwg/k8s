@@ -138,6 +138,8 @@ kubectl describe pods ${POD_NAME}
 
 ## Errors
 
+### `/data` directory permission issues
+
 ```
 level=error ts=2020-09-26T01:03:04.688Z caller=query_logger.go:87 component=activeQueryTracker msg="Error opening query log  file" file=/data/queries.active err="open /data/queries.active: permission denied"
 panic: Unable to create mmap-ed active query log
