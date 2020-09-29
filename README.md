@@ -163,3 +163,67 @@ main.main()
         #runAsUser: 65534
         runAsUser: 0
 ```
+
+### error with Volume binding for prometheus server
+
+```
+$ k describe pods  myprom-prometheus-server-8d4c6bcb5-9ckwj
+...
+
+Events:
+  Type     Reason            Age                 From               Message
+  ----     ------            ----                ----               -------
+  Warning  FailedScheduling  51s (x20 over 25m)  default-scheduler  running "VolumeBinding" filter plugin for pod "myprom-prometheus-server-8d4c6bcb5-9ckwj": pod has unbound immediate PersistentVolumeClaims
+```
+
+===> 
+
+execute below mkdir command in all the nodes in the cluster.
+
+```
+$ sudo mkdir /mnt/prometheusvol{1,2}
+```
+
+Then execute in master server,
+
+```
+$ k get pvc
+NAME                              STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+myprom-prometheus-alertmanager   Pending                                                     30m
+myprom-prometheus-server         Pending                                                     30m
+
+$ k create -f - <<EOF
+> kind: PersistentVolume
+> apiVersion: v1
+> metadata:
+>   name: prometheusvol1
+> spec:
+>   storageClassName:
+>   capacity:
+>     storage: 5Gi
+>   accessModes:
+>     - ReadWriteOnce
+>   hostPath:
+>     path: "/mnt/prometheusvol1"
+> ---
+> kind: PersistentVolume
+> apiVersion: v1
+> metadata:
+>   name: prometheusvol2
+> spec:
+>   storageClassName:
+>   capacity:
+>     storage: 10Gi
+>   accessModes:
+>     - ReadWriteOnce
+>   hostPath:
+>     path: "/mnt/prometheusvol2"
+> EOF
+persistentvolume/prometheusvol1 created
+persistentvolume/prometheusvol2 created
+
+$ k get pvc
+NAME                              STATUS   VOLUME           CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+myprom-prometheus-alertmanager   Bound    prometheusvol1   5Gi        RWO                           35m
+myprom-prometheus-server         Bound    prometheusvol2   10Gi       RWO                           35m
+```
