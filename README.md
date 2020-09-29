@@ -116,3 +116,9 @@ http://172.18.0.2:30552
 
 The username and password is admin
 
+### Debugging Pods
+
+```
+kubectl describe pods ${POD_NAME}
+```
+
