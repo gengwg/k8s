@@ -116,9 +116,48 @@ http://172.18.0.2:30552
 
 The username and password is admin
 
+### Helm Install Prometheus on Mac
+
+```
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm search repo prometheus-community
+helm install myprom prometheus-community/prometheus
+# get prometheus service ports
+kubectl get svc
+# forward prometheus port to local port
+kubectl port-forward service/myprom-prometheus-server 9090:80
+# go to browser to test
+curl localhost:9090/graph
+```
+
 ### Debugging Pods
 
 ```
 kubectl describe pods ${POD_NAME}
 ```
 
+## Errors
+
+```
+level=error ts=2020-09-26T01:03:04.688Z caller=query_logger.go:87 component=activeQueryTracker msg="Error opening query log  file" file=/data/queries.active err="open /data/queries.active: permission denied"
+panic: Unable to create mmap-ed active query log
+goroutine 1 [running]:
+github.com/prometheus/prometheus/promql.NewActiveQueryTracker(0x7fffcbccf6de, 0x5, 0x14, 0x30898a0, 0xc000c2cae0, 0x30898a0)
+>---/app/promql/query_logger.go:117 +0x4cd
+main.main()
+>---/app/cmd/prometheus/main.go:374 +0x4f08
+```
+
+===>
+
+```
+      securityContext:
+        fsGroup: 0
+        #fsGroup: 65534
+        #fsGroup: 2000
+        #runAsGroup: 65534
+        runAsGroup: 0
+        #runAsNonRoot: true
+        #runAsUser: 65534
+        runAsUser: 0
+```
