@@ -79,6 +79,15 @@ hello-1600848780   1/1           3s         18h
 hello-1600848840   1/1           3s         18h
 ```
 
+### Creates a proxy server
+
+Creates a proxy server or application-level gateway between localhost and the Kubernetes API Server. Allow access from anywhere.
+
+```
+$ kubectl proxy --address=0.0.0.0 --accept-hosts=.*
+Starting to serve on [::]:8001
+```
+
 ### Deploy Prometheus Server and Grafana
 
 #### Prometheus
@@ -134,6 +143,12 @@ curl localhost:9090/graph
 
 ```
 kubectl describe pods ${POD_NAME}
+```
+
+## Helm
+
+```
+
 ```
 
 ## Errors
