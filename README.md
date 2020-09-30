@@ -145,6 +145,10 @@ curl localhost:9090/graph
 kubectl describe pods ${POD_NAME}
 ```
 
+### Cronjob
+
+Looks k8s cronjobs default uses UTC, even if the master time zone is set to PDT.
+
 ## Helm
 
 ### Install Helm
