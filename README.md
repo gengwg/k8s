@@ -67,7 +67,7 @@ $ kubectl get pods
 No resources found.
 ```
 
-## Usage
+## Commands
 
 ### Watch a command using -w
 
@@ -77,6 +77,18 @@ NAME               COMPLETIONS   DURATION   AGE
 hello-1600848720   1/1           3s         18h
 hello-1600848780   1/1           3s         18h
 hello-1600848840   1/1           3s         18h
+```
+
+### Get services from all namespaces
+
+```
+$ kubectl get svc -A | grep graf
+ingress-nginx   grafana                              NodePort       10.97.25.250     <none>        3000:30552/TCP               7d7h
+```
+### Get ServiceMonitor's
+
+```
+$ kubectl get servicemonitor
 ```
 
 ### Creates a proxy server
