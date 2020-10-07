@@ -208,6 +208,16 @@ helm template myprom prometheus-community/prometheus > k8s-myprom.yaml
 kubectl apply -f k8s-myprom.yaml
 ```
 
+### Install chart into a specific namespace
+
+```sh
+$ kubectl create ns monitoring
+$ helm install prometheus stable/prometheus-operator --namespace monitoring
+# uninstall need namespace name specified
+$ helm uninstall prometheus --namespace monitoring
+release "prometheus" uninstalled
+```
+
 ## Errors
 
 ### `/data` directory permission issues
