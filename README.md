@@ -100,6 +100,15 @@ $ kubectl proxy --address=0.0.0.0 --accept-hosts=.*
 Starting to serve on [::]:8001
 ```
 
+### Get pods using label
+
+```sh
+$ kubectl --namespace monitoring get pods -l "release=prometheus"
+NAME                                                   READY   STATUS    RESTARTS   AGE
+prometheus-prometheus-node-exporter-dbkhl              0/1     Pending   0          68s
+prometheus-prometheus-oper-operator-85cc758cdb-6c5pc   2/2     Running   0          68s
+```
+
 ### Deploy Prometheus Server and Grafana
 
 #### Prometheus
