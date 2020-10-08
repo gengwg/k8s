@@ -227,6 +227,11 @@ $ helm uninstall prometheus --namespace monitoring
 release "prometheus" uninstalled
 ```
 
+## Notes
+
+Kubernetes requires that each container in a cluster has a unique, routable IP. Kubernetes doesn’t assign IPs itself, leaving the task to third-party solutions.
+
+
 ## Errors
 
 ### `/data` directory permission issues
