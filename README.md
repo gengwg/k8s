@@ -118,6 +118,12 @@ prometheus-prometheus-node-exporter-dbkhl              0/1     Pending   0      
 prometheus-prometheus-oper-operator-85cc758cdb-6c5pc   2/2     Running   0          68s
 ```
 
+### Debugging Pods
+
+```
+kubectl describe pods ${POD_NAME}
+```
+
 ### Deploy Prometheus Server and Grafana
 
 #### Prometheus
@@ -168,16 +174,6 @@ kubectl port-forward service/myprom-prometheus-server 9090:80
 # go to browser to test
 curl localhost:9090/graph
 ```
-
-### Debugging Pods
-
-```
-kubectl describe pods ${POD_NAME}
-```
-
-### Cronjob
-
-Looks k8s cronjobs default uses UTC, even if the master time zone is set to PDT.
 
 ## Helm
 
@@ -238,8 +234,13 @@ release "prometheus" uninstalled
 
 ## Notes
 
+### Network
+
 Kubernetes requires that each container in a cluster has a unique, routable IP. Kubernetes doesn’t assign IPs itself, leaving the task to third-party solutions.
 
+### Cronjob
+
+Looks k8s cronjobs default uses UTC, even if the master time zone is set to PDT.
 
 ## Errors
 
