@@ -85,6 +85,15 @@ hello-1600848840   1/1           3s         18h
 $ kubectl get svc -A | grep graf
 ingress-nginx   grafana                              NodePort       10.97.25.250     <none>        3000:30552/TCP               7d7h
 ```
+
+### Get a specific service
+
+```
+$ kubectl get service redis-master
+NAME           TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+redis-master   ClusterIP   10.96.104.226   <none>        6379/TCP   6s
+```
+
 ### Get ServiceMonitor's
 
 ```
