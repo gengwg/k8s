@@ -242,6 +242,31 @@ Kubernetes requires that each container in a cluster has a unique, routable IP. 
 
 Looks k8s cronjobs default uses UTC, even if the master time zone is set to PDT.
 
+#### View logs for cron job
+
+> A `Cron Job` creates Jobs on a time-based schedule
+
+> A `job` creates one or more pods and ensures that a specified number of them successfully terminate.
+
+All you need is to view logs for a pod that was created for the job.
+
+1. Find your job with `kubectl get jobs`. This will return your CronJob name with a timestamp
+
+2. Find pod for executed job `kubectl get pods -l job-name=your-job-@timestamp`
+
+3. Use `kubectl logs your-job-@timestamp-id` to view logs
+
+Here's an example of bash script that does all the above and outputs logs for every job's pod.
+
+```
+jobs=( $(kubectl get jobs --no-headers -o custom-columns=":metadata.name") )
+for job in "${jobs[@]}"
+do
+   pod=$(kubectl get pods -l job-name=$job --no-headers -o custom-columns=":metadata.name")
+   kubectl logs $pod
+done
+```
+
 ## Errors
 
 ### `/data` directory permission issues
