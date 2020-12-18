@@ -124,6 +124,24 @@ prometheus-prometheus-oper-operator-85cc758cdb-6c5pc   2/2     Running   0      
 kubectl describe pods ${POD_NAME}
 ```
 
+### Use Port Forwarding to Access Applications in a Cluster
+
+```
+kubectl port-forward redis-master-765d459796-258hz 7000:6379
+kubectl port-forward pods/redis-master-765d459796-258hz 7000:6379
+kubectl port-forward deployment/redis-master 7000:6379
+kubectl port-forward replicaset/redis-master 7000:6379
+kubectl port-forward service/redis-master 7000:6379
+```
+
+Connections made to local port 7000 are forwarded to port 6379 of the Pod that is running the Redis server.
+
+```
+$ redis-cli -p 7000
+127.0.0.1:7000> ping
+PONG
+```
+
 ### Deploy Prometheus Server and Grafana
 
 #### Prometheus
