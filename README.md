@@ -118,6 +118,12 @@ prometheus-prometheus-node-exporter-dbkhl              0/1     Pending   0      
 prometheus-prometheus-oper-operator-85cc758cdb-6c5pc   2/2     Running   0          68s
 ```
 
+### Force delete pods
+
+```
+kubectl delete pods pod_name --grace-period=0 --force
+```
+
 ### Debugging Pods
 
 ```
