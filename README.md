@@ -299,6 +299,32 @@ do
 done
 ```
 
+### Sepcifying your own Cluster IP address
+
+Cluster IP is a virtual IP that is allocated by the K8s to a service. It is K8s internal IP.
+A Cluster IP makes it accessible from any of the Kubernetes cluster’s nodes.
+
+You can specify your own cluster IP address as part of a Service creation request. To do this, set the .spec.clusterIP field.
+The IP address that you choose must be a valid IPv4 or IPv6 address from within the service-cluster-ip-range CIDR range that is configured for the API server.
+
+Example:
+
+```
+# abc-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - name: "myservice"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  clusterIP: 10.96.104.222
+```
 ## Errors
 
 ### `/data` directory permission issues
