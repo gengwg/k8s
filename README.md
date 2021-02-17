@@ -325,6 +325,29 @@ spec:
       targetPort: 8080
   clusterIP: 10.96.104.222
 ```
+
+### Getting a shell to a pod/container
+
+Get interactive shell to a Pod (if the Pod has multiple containers, you will login to a default one, i.e. the first container specified in the Pod’s config.):
+
+```
+kubectl exec --stdin --tty <pod name> -- /bin/sh
+```
+
+Login to a particular container in the Pod:
+
+```
+# first get the containers in the pod:
+$ k get pods <pod name> -o jsonpath='{.spec.containers[*].name}'
+container1 container2
+
+# log in to a particular pod:
+$ k exec --stdin --tty <pod name> -c container1 -- /bin/sh
+/ $
+$ k exec --stdin --tty <pod name> -c container2 -- /bin/sh
+~ $
+```
+
 ## Errors
 
 ### `/data` directory permission issues
