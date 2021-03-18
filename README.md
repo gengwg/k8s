@@ -98,6 +98,12 @@ $ kubectl get svc -A | grep graf
 ingress-nginx   grafana                              NodePort       10.97.25.250     <none>        3000:30552/TCP               7d7h
 ```
 
+### Create a New Namespace
+
+```
+$ kubectl create namespace gengwg
+```
+
 ### Get a specific service
 
 ```
