@@ -66,7 +66,8 @@ Delete cluster:
 kind delete cluster
 ```
 
-Load docker image:
+Load docker image: 
+(useful for kind k8s cluster could not reach company internal registry).
 
 ```
 kind load docker-image <my-image>
