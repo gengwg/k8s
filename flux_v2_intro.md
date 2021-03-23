@@ -28,7 +28,7 @@ brew install fluxcd/tap/flux
 $ kind create cluster
 ```
 
-### (Optional)
+### (Optional) bash auto completions
 
 Put below in your `.bashrc` for flux bash auto completions:
 
