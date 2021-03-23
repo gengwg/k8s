@@ -66,6 +66,12 @@ Delete cluster:
 kind delete cluster
 ```
 
+Load docker image:
+
+```
+kind load docker-image <my-image>
+```
+
 ### Alpline hello world example
 
 ```
