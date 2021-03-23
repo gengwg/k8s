@@ -4,7 +4,11 @@ The worker node(s) host the Pods that are the components of the application work
 
 ![](https://d33wubrfki0l68.cloudfront.net/2475489eaf20163ec0f54ddc1d92aa8d4c87c96b/e7c81/images/docs/components-of-kubernetes.svg)
 
+The container runtime is the software that is responsible for running containers.
+
 Kubernetes run times
+
+Cluster DNS is a DNS server, in addition to the other DNS server(s) in your environment, which serves DNS records for Kubernetes services. Containers started by Kubernetes automatically include this DNS server in their DNS searches.
 
 * Docker
 * Containerd
@@ -56,6 +60,11 @@ NAME                 STATUS   ROLES    AGE   VERSION
 kind-control-plane   Ready    master   62s   v1.19.1
 ```
 
+Delete cluster:
+
+```
+kind delete cluster
+```
 
 ### Alpline hello world example
 
