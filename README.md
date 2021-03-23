@@ -381,7 +381,7 @@ $ k exec --stdin --tty <pod name> -c container2 -- /bin/sh
 $ kubectl get pod calico-node-8l84t -n kube-system -o yaml
 $ kubectl get ConfigMap calico-config -n kube-system -o yaml
 $ kubectl get DaemonSet calico-node -n kube-system -o yaml > calico-daemonset.yaml
-
+```
 ## Errors
 
 ### `/data` directory permission issues
