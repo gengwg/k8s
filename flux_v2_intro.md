@@ -22,6 +22,12 @@ export GITHUB_USER=<your-username>
 brew install fluxcd/tap/flux
 ```
 
+On linux:
+
+```
+curl -s https://toolkit.fluxcd.io/install.sh | sudo bash
+```
+
 ### Start KIND cluster
 
 ```
@@ -315,6 +321,88 @@ podinfo-b44994dc4-gf25z   1/1     Running   0          104m
 podinfo-b44994dc4-xsbpj   1/1     Running   0          104m
 ```
 
+## Example 3: Using Helm Chart Release
+
+### Define Helm Chart Source Using Helm Repository
+
+To be able to release a Helm chart, the source that contains the chart (either a HelmRepository, GitRepository, or Bucket) has to be known first to the source-controller, so that the HelmRelease can reference to it.
+
+They can be declared by creating a HelmRepository resource, the source-controller will fetch the Helm repository index for this resource on an interval and expose it as an artifact.
+
+```
+cat podinfo-source.yaml
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: podinfo
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://stefanprodan.github.io/podinfo
+```
+
+Git commit and push. After this, you will see 2 pods running:
+
+```
+$ kubectl get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+alpine                     1/1     Running   0          5m40s
+podinfo-8574699f75-5vdpg   1/1     Running   0          5m24s
+podinfo-8574699f75-9nhxq   1/1     Running   0          5m39s
+```
+
+That's probably because the default kustomize uses 2 replicas:
+
+https://github.com/stefanprodan/podinfo/blob/master/kustomize/hpa.yaml
+
+You can verify flux got the helm chart source:
+
+```
+$ flux get sources chart
+NAME           	READY	MESSAGE                	REVISION	SUSPENDED
+default-podinfo	True 	Fetched revision: 5.2.0	5.2.0   	False
+```
+### Define Helm Chart Release
+
+```
+cat podinfo-kustomization.yaml
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: podinfo
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: podinfo
+      version: '>5.0.0'
+      sourceRef:
+        kind: HelmRepository
+        name: podinfo
+        namespace: flux-system
+      interval: 1m
+  values:
+    replicaCount: 1
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+```
+
+Git commit and push. After this, you will see 1 pods running:
+
+```
+$ kubectl get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+alpine                     1/1     Running   0          16m
+podinfo-7466f7f75b-lfb2p   1/1     Running   0          7m55s
+```
+
+Because that's the new replicaCount we defined in the values section.
+
 ## Errors
 
 Here are a few errors I met.
@@ -401,3 +489,23 @@ NAME       	READY	MESSAGE                                                       
 flux-system	True 	Applied revision: main/ce3aa51a55aec0cde3f370a38cfb7436c6830a4e  	main/ce3aa51a55aec0cde3f370a38cfb7436c6830a4e  	False
 podinfo    	True 	Applied revision: master/ef98a040c89180a4f39c0ab01dac47e6c3fced08	master/ef98a040c89180a4f39c0ab01dac47e6c3fced08	False
 ```
+
+###  401 Requires authentication
+
+```
+$ flux bootstrap github \
+>   --owner=$GITHUB_USER \
+>   --repository=fleet-infra \
+>   --branch=main \
+>   --path=./clusters/my-cluster \
+>   --personal
+► connecting to github.com
+✗ failed to create repository, error: POST https://api.github.com/user/repos: 401 Requires authentication []
+```
+
+===>
+
+Token expired or incorrect. Regenerate at:
+
+https://github.com/settings/tokens
+
