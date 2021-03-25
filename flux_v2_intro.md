@@ -1,7 +1,8 @@
 This is an tutorial for using Flux with KIND cluster and Github on your laptop.
 
-## Prerequisite
+Flux, by weaveworks, is a GitOps Kubernetes Operator that ensures that your cluster state matches the desired state described in a git repository.
 
+## Prerequisite
 
 ### Get Github personal access token
 
