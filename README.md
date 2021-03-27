@@ -182,6 +182,12 @@ $ redis-cli -p 7000
 PONG
 ```
 
+### Get all resources in a namespace
+
+```
+kubectl get all -n monitoring
+```
+
 ### Deploy Prometheus Server and Grafana
 
 #### Prometheus
