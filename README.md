@@ -101,8 +101,27 @@ brew install octant
 Usage:
 
 ```
-
-
+$ kubens
+default <-- highlighted
+flux-system
+kube-node-lease
+kube-public
+kube-system
+local-path-storage
+monitoring
+$ kubens monitoring
+Context "kind-kind" modified.
+Active namespace is "monitoring".
+$ kubens
+default
+flux-system
+kube-node-lease
+kube-public
+kube-system
+local-path-storage
+monitoring <-- highlighted
+$ k get pods
+<now will show pods in monitoring namespace>
 ```
 
 ### Get kubernetes version
