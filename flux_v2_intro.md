@@ -2,6 +2,9 @@ This is an tutorial for using Flux with KIND cluster and Github on your laptop.
 
 Flux, by weaveworks, is a GitOps Kubernetes Operator that ensures that your cluster state matches the desired state described in a git repository.
 
+source controller to define where yaml files are.
+kustomization controller to deploy those yaml files.
+
 ## Prerequisite
 
 ### Get Github personal access token
@@ -512,6 +515,6 @@ https://github.com/settings/tokens
 
 ## References
 
-- https://www.youtube.com/watch?v=N6UCKF7JD7k&t=6s
-
-
+- https://www.youtube.com/watch?v=N6UCKF7JD7k
+- https://www.youtube.com/watch?v=btqZkVQIdd8
+- https://www.youtube.com/watch?v=wMSswUaN-34

@@ -89,6 +89,22 @@ No resources found.
 
 ## Commands
 
+### Mac Install a few k8s Tools
+
+```
+brew install kubectl
+brew install kubectx
+brew install kubens
+brew install octant
+```
+
+Usage:
+
+```
+
+
+```
+
 ### Get kubernetes version
 
 ```
