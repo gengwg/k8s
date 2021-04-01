@@ -533,6 +533,20 @@ storageclasses                    sc           storage.k8s.io/v1                
 volumeattachments                              storage.k8s.io/v1                        false        VolumeAttachment
 ```
 
+### Get more detailed outputs using -owide option
+
+```
+$ kubectl get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+alpine                     1/1     Running   109        7d19h
+podinfo-7466f7f75b-lfb2p   1/1     Running   0          7d19h
+podinfo-7466f7f75b-wdj62   1/1     Running   0          7d15h
+$ kubectl get pods -owide
+NAME                       READY   STATUS    RESTARTS   AGE     IP            NODE                 NOMINATED NODE   READINESS GATES
+alpine                     1/1     Running   109        7d19h   10.244.0.9    kind-control-plane   <none>           <none>
+podinfo-7466f7f75b-lfb2p   1/1     Running   0          7d19h   10.244.0.12   kind-control-plane   <none>           <none>
+podinfo-7466f7f75b-wdj62   1/1     Running   0          7d15h   10.244.0.13   kind-control-plane   <none>           <none>
+```
 ## Errors
 
 ### `/data` directory permission issues
