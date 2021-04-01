@@ -66,12 +66,26 @@ Delete cluster:
 kind delete cluster
 ```
 
-Load docker image: 
+Load docker image:
 (useful for kind k8s cluster could not reach company internal registry).
 
 ```
 kind load docker-image <my-image>
 ```
+
+Create a new cluster with different name:
+
+```
+$ kind create cluster --name my-cluster
+```
+
+
+Create a cluster using yaml config:
+
+```
+$ kind create cluster --name cluster2 --config kind.yaml 
+```
+
 
 ### Alpline hello world example
 
