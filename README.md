@@ -138,6 +138,31 @@ $ k get pods
 <now will show pods in monitoring namespace>
 ```
 
+### kubectl switch k8s context
+
+The context in Kubernetes is like a connection to a server that tells Kubernetes which Cluster to connect to.
+
+When we set the context, Kubernetes will send all the command to the cluster that is set in the context.
+
+```
+$ kubectl config get-contexts
+CURRENT   NAME              CLUSTER           AUTHINFO          NAMESPACE
+*         kind-cluster2     kind-cluster2     kind-cluster2     
+          kind-kind         kind-kind         kind-kind         
+          kind-my-cluster   kind-my-cluster   kind-my-cluster   
+$ kubectl config current-context
+kind-cluster2
+$ kubectl config use-context kind-kind
+Switched to context "kind-kind".
+$ kubectl config current-context
+kind-kind
+$ kubectl config get-contexts
+CURRENT   NAME              CLUSTER           AUTHINFO          NAMESPACE
+          kind-cluster2     kind-cluster2     kind-cluster2     
+*         kind-kind         kind-kind         kind-kind         
+          kind-my-cluster   kind-my-cluster   kind-my-cluster   
+```
+
 ### Get kubernetes version
 
 ```
