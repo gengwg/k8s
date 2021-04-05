@@ -370,6 +370,12 @@ $ helm uninstall prometheus --namespace monitoring
 release "prometheus" uninstalled
 ```
 
+### Copy kubernetes secret from one namespace to another
+
+```
+kubectl get secret mysecret --namespace=namespace1 -o yaml | sed 's/namespace: namespace1/namespace: namespace2/g' | kubectl create -f -  
+```
+
 ## Notes
 
 ### Network
