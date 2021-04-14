@@ -615,6 +615,24 @@ NAME                          READY   STATUS    RESTARTS   AGE     LABELS
 helloworld                    1/1     Running   0          5m57s   application_type=ui,author=karthequian,env=production,release-version=1.0
 ```
 
+### Select with labels
+
+```
+$ k get pods --selector env=production
+$ k get pods --selector dev-lead=karthik,env=staging
+NAME               READY   STATUS    RESTARTS   AGE
+homepage-staging   1/1     Running   0          3m26s
+$ k get pods --selector dev-lead!=karthik,env=staging
+$ k get pods -l 'release-version in (1.0,2.0)' --show-labels
+# equivalent to above
+$ k get pods --selector 'release-version in (1.0,2.0)'
+$ k get pods -l 'release-version notin (1.0,2.0)' --show-labels
+# delete pods using labels
+$ k delete pods -l dev-lead=karthik
+```
+
+Can also be used with deployment, service, etc. labels.
+
 ## Errors
 
 ### `/data` directory permission issues
