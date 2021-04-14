@@ -588,6 +588,15 @@ alpine                     1/1     Running   109        7d19h   10.244.0.9    ki
 podinfo-7466f7f75b-lfb2p   1/1     Running   0          7d19h   10.244.0.12   kind-control-plane   <none>           <none>
 podinfo-7466f7f75b-wdj62   1/1     Running   0          7d15h   10.244.0.13   kind-control-plane   <none>           <none>
 ```
+
+### Show pods labels
+
+```
+$ kubectl get pods --show-labels
+NAME                          READY   STATUS    RESTARTS   AGE    LABELS
+helloworld                    1/1     Running   0          27s    application_type=ui,author=karthequian,env=production,release-version=1.0
+```
+
 ## Errors
 
 ### `/data` directory permission issues
