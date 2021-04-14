@@ -596,6 +596,15 @@ $ kubectl get pods --show-labels
 NAME                          READY   STATUS    RESTARTS   AGE    LABELS
 helloworld                    1/1     Running   0          27s    application_type=ui,author=karthequian,env=production,release-version=1.0
 ```
+### Add labels to a running pod
+
+```
+$ kubectl label po/helloworld app=helloworldapp --overwrite
+pod/helloworld labeled
+$ kubectl get pods --show-labels
+NAME                          READY   STATUS    RESTARTS   AGE    LABELS
+helloworld                    1/1     Running   0          4m3s   app=helloworldapp,application_type=ui,author=karthequian,env=production,release-version=1.0
+```
 
 ## Errors
 
