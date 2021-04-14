@@ -101,6 +101,15 @@ $ kubectl get pods
 No resources found.
 ```
 
+## Minikube
+
+```
+brew install minikube
+minikube version
+minikube start
+```
+
+
 ## Commands
 
 ### Mac Install a few k8s Tools
