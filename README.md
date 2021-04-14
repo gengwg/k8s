@@ -606,6 +606,15 @@ NAME                          READY   STATUS    RESTARTS   AGE    LABELS
 helloworld                    1/1     Running   0          4m3s   app=helloworldapp,application_type=ui,author=karthequian,env=production,release-version=1.0
 ```
 
+### Delete label from a pod
+```
+$ kubectl label po/helloworld app-
+pod/helloworld labeled
+$ kubectl get pods --show-labels
+NAME                          READY   STATUS    RESTARTS   AGE     LABELS
+helloworld                    1/1     Running   0          5m57s   application_type=ui,author=karthequian,env=production,release-version=1.0
+```
+
 ## Errors
 
 ### `/data` directory permission issues
