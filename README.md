@@ -143,7 +143,6 @@ $ minikube start # first time takes long time
 ```
 brew install kubectl
 brew install kubectx
-brew install kubens
 brew install octant
 ```
 
