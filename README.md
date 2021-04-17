@@ -307,6 +307,27 @@ PONG
 kubectl get all -n monitoring
 ```
 
+### Create Configmap
+
+```
+$ kubectl create configmap logger --from-literal=log_level=debug
+$ k get cm/logger -o yaml
+apiVersion: v1
+data:
+  log_level: debug
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-04-17T16:40:11Z"
+  name: logger
+  namespace: default
+  resourceVersion: "37730"
+  uid: 67ac0419-d2f7-41b1-be90-47d083ffb629
+$ k get cm
+NAME               DATA   AGE
+kube-root-ca.crt   1      24h
+logger             1      3m15s
+```
+
 ### Deploy Prometheus Server and Grafana
 
 #### Prometheus
@@ -606,7 +627,7 @@ $ kubectl get pods --show-labels
 NAME                          READY   STATUS    RESTARTS   AGE    LABELS
 helloworld                    1/1     Running   0          27s    application_type=ui,author=karthequian,env=production,release-version=1.0
 ```
-### Add labels to a running pod
+### Modify labels to a running pod
 
 ```
 $ kubectl label po/helloworld app=helloworldapp --overwrite
@@ -614,6 +635,12 @@ pod/helloworld labeled
 $ kubectl get pods --show-labels
 NAME                          READY   STATUS    RESTARTS   AGE    LABELS
 helloworld                    1/1     Running   0          4m3s   app=helloworldapp,application_type=ui,author=karthequian,env=production,release-version=1.0
+```
+
+Label a node:
+
+```
+$ k label node/minikube infra=development --overwrite
 ```
 
 ### Delete label from a pod
