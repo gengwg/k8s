@@ -135,6 +135,17 @@ $ minikube start # first time takes long time
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
+### List Addons
+
+```
+minikube addons list
+```
+
+### Enable Addons
+
+```
+minikube addons enable dashboard
+```
 
 ## Commands
 
