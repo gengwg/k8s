@@ -436,6 +436,13 @@ $ helm uninstall prometheus --namespace monitoring
 release "prometheus" uninstalled
 ```
 
+### Create Secret
+
+```
+$ kubectl create secret generic apikey --from-literal=api_key=1234567
+secret/apikey created
+```
+
 ### Copy kubernetes secret from one namespace to another
 
 ```
