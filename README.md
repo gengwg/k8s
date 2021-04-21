@@ -155,6 +155,7 @@ minikube addons enable dashboard
 brew install kubectl
 brew install kubectx
 brew install octant
+brew install kustomize
 ```
 
 Usage:
@@ -458,6 +459,21 @@ Kubernetes requires that each container in a cluster has a unique, routable IP. 
 ### Cronjob
 
 Looks k8s cronjobs default uses UTC, even if the master time zone is set to PDT.
+
+#### Suspend a cronjob
+
+```
+$ kubectl edit cronjobs/hellocron
+...
+  schedule: '*/1 * * * *'
+  successfulJobsHistoryLimit: 3
+  suspend: true <----
+...
+
+$ k get cronjob
+NAME        SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hellocron   */1 * * * *   True      0        68s             2m22s
+```
 
 #### View logs for cron job
 
@@ -768,3 +784,7 @@ NAME                              STATUS   VOLUME           CAPACITY   ACCESS MO
 myprom-prometheus-alertmanager   Bound    prometheusvol1   5Gi        RWO                           35m
 myprom-prometheus-server         Bound    prometheusvol2   10Gi       RWO                           35m
 ```
+
+## Resources
+
+- https://github.com/kelseyhightower/kubernetes-the-hard-way
