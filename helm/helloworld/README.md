@@ -60,3 +60,15 @@ alpine                     1/1     Running   371        27d
 podinfo-7466f7f75b-lfb2p   1/1     Running   1          27d
 podinfo-7466f7f75b-wdj62   1/1     Running   1          27d
 ```
+
+
+We will first replace the original template with our new template, then install it with Helm and verify.
+
+```
+$ mv templates templates_old
+$ mv templates_new/ templates
+$ Helm delete helloworld
+$ Helm install helloworld .
+$ k logs -f helloworld
+My name is Gary. I work for Marketing department. Our company name is ABC Company
+```
