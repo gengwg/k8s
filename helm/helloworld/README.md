@@ -1,3 +1,7 @@
+https://jfrog.com/blog/power-up-helm-charts-using-kustomize-to-manage-kubernetes-deployments/
+
+## HelloWorld Helm Chart
+
 ```
 $ helm install helloworld .
 NAME: helloworld
@@ -61,6 +65,7 @@ podinfo-7466f7f75b-lfb2p   1/1     Running   1          27d
 podinfo-7466f7f75b-wdj62   1/1     Running   1          27d
 ```
 
+## Overlay with Kustomize
 
 We will first replace the original template with our new template, then install it with Helm and verify.
 
