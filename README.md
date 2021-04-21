@@ -693,6 +693,12 @@ $ k delete pods -l dev-lead=karthik
 
 Can also be used with deployment, service, etc. labels.
 
+### Get node a pod is running on
+
+```
+k describe podname | grep Node:
+```
+
 ## Errors
 
 ### `/data` directory permission issues
