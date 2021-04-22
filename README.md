@@ -699,6 +699,18 @@ Can also be used with deployment, service, etc. labels.
 k describe podname | grep Node:
 ```
 
+### kubectl verbose output
+
+```
+kubectl -v8 
+```
+
+for example
+
+```
+k -v8 port-forward svc/myservice 3000:80
+```
+
 ## Errors
 
 ### `/data` directory permission issues
