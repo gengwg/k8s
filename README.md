@@ -217,6 +217,22 @@ Client Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.2", GitCom
 Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.1", GitCommit:"206bcadf021e76c27513500ca24182692aabd17e", GitTreeState:"clean", BuildDate:"2020-09-14T07:30:52Z", GoVersion:"go1.15", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
+Shorter version:
+
+```
+$ kubectl version --short=true
+Client Version: v1.20.0
+Server Version: v1.19.1
+```
+
+Only check client version and omit server version:
+
+```
+$ kubectl version --short=true --client=true
+Client Version: v1.20.0
+```
+
+
 ### Watch a command using -w
 
 ```
@@ -802,6 +818,63 @@ NAME                              STATUS   VOLUME           CAPACITY   ACCESS MO
 myprom-prometheus-alertmanager   Bound    prometheusvol1   5Gi        RWO                           35m
 myprom-prometheus-server         Bound    prometheusvol2   10Gi       RWO                           35m
 ```
+
+### error upgrading connection: unable to upgrade connection: Forbidden
+
+```
+$ k port-forward svc/prometheus 9090:9090 -n monitoring
+error: error upgrading connection: unable to upgrade connection: Forbidden (user=kubernetes, verb=create, resource=nodes, subresource=proxy)
+```
+
+Kubectl exec has same error.
+
+Checked auth no problem:
+
+```
+$ k auth can-i create nodes/proxy -n monitoring
+Warning: resource 'nodes' is not namespace scoped
+yes
+```
+
+This is general, not only to some specific service. e.gl dex also having issue:
+
+```
+# KUBECONFIG=admin.kubeconfig kubectl port-forward svc/dex 5556:5556 -n auth
+error: error upgrading connection: unable to upgrade connection: Forbidden (user=kubernetes, verb=create, resource=nodes, subresource=proxy)
+```
+
+===>
+
+Root cause: 使用 kubectl exec 命令时，会转到kubelet，需要对 apiserver 调用 kubelet API 的授权。所以跟 kubectl 的其他命令有些区别。
+
+```
+$ k create clusterrolebinding system:kubernetes --clusterrole=cluster-admin --user=system:kubernetes
+clusterrolebinding.rbac.authorization.k8s.io/system:kubernetes created
+$ KUBECONFIG=admin.kubeconfig kubectl port-forward  svc/dex 5556:5556 -n auth
+error: error upgrading connection: unable to upgrade connection: Forbidden (user=kubernetes, verb=create, resource=nodes, subresource=proxy)
+```
+
+```
+$ k create clusterrolebinding kubernetes --clusterrole=cluster-admin --user=kubernetes
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes created
+$ KUBECONFIG=admin.kubeconfig kubectl port-forward  svc/dex 5556:5556 -n auth
+Forwarding from 127.0.0.1:5556 -> 5556
+Forwarding from [::1]:5556 -> 5556
+```
+
+Idea came from: https://blog.csdn.net/doyzfly/article/details/102963001
+
+解决办法1:
+为 kubectl 创建一个用于鉴权的用户信息，并存在 kubeconfig 中，然后使用 RoleBinding 绑定用户权限，这个方法比较复杂，可参考这边文章配置，创建用户认证授权的kubeconfig文件
+
+解决办法2:
+为 system:anonymous 临时绑定一个 cluster-admin 的权限
+
+kubectl create clusterrolebinding system:anonymous --clusterrole=cluster-admin --user=system:anonymous
+
+这个权限放太松了，很危险。 可以只对 anonymous 用户绑定必要权限即可，修改为：
+
+kubectl create clusterrolebinding kube-apiserver:kubelet-apis --clusterrole=system:kubelet-api-admin --user=system:anonymous
 
 ## Resources
 
