@@ -466,6 +466,12 @@ secret/apikey created
 kubectl get secret mysecret --namespace=namespace1 -o yaml | sed 's/namespace: namespace1/namespace: namespace2/g' | kubectl create -f -  
 ```
 
+### List the taints on Kubernetes nodes
+
+```
+kubectl get nodes -o json | jq '.items[].spec.taints'
+```
+
 ## Notes
 
 ### Network
