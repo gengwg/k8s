@@ -291,8 +291,10 @@ prometheus-prometheus-oper-operator-85cc758cdb-6c5pc   2/2     Running   0      
 ### Force delete pods
 
 ```
-kubectl delete pods pod_name --grace-period=0 --force
+kubectl delete pods pod_name --grace-period=0 --force -n myns
 ```
+
+Be careful using this though. If you need force delete a pod, there is usually an issue with the cluster itself going on. So check cluster status before doing that.
 
 ### Debugging Pods
 
