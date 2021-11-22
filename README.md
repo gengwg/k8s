@@ -483,83 +483,6 @@ sort |\
 uniq -c
 ```
 
-## Notes
-
-### Network
-
-Kubernetes requires that each container in a cluster has a unique, routable IP. Kubernetes doesn’t assign IPs itself, leaving the task to third-party solutions.
-
-### Cronjob
-
-Looks k8s cronjobs default uses UTC, even if the master time zone is set to PDT.
-
-#### Suspend a cronjob
-
-```
-$ kubectl edit cronjobs/hellocron
-...
-  schedule: '*/1 * * * *'
-  successfulJobsHistoryLimit: 3
-  suspend: true <----
-...
-
-$ k get cronjob
-NAME        SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
-hellocron   */1 * * * *   True      0        68s             2m22s
-```
-
-#### View logs for cron job
-
-> A `Cron Job` creates Jobs on a time-based schedule
-
-> A `job` creates one or more pods and ensures that a specified number of them successfully terminate.
-
-All you need is to view logs for a pod that was created for the job.
-
-1. Find your job with `kubectl get jobs`. This will return your CronJob name with a timestamp
-
-2. Find pod for executed job `kubectl get pods -l job-name=your-job-@timestamp`
-
-3. Use `kubectl logs your-job-@timestamp-id` to view logs
-
-Here's an example of bash script that does all the above and outputs logs for every job's pod.
-
-```
-jobs=( $(kubectl get jobs --no-headers -o custom-columns=":metadata.name") )
-for job in "${jobs[@]}"
-do
-   pod=$(kubectl get pods -l job-name=$job --no-headers -o custom-columns=":metadata.name")
-   kubectl logs $pod
-done
-```
-
-### Sepcifying your own Cluster IP address
-
-Cluster IP is a virtual IP that is allocated by the K8s to a service. It is K8s internal IP.
-A Cluster IP makes it accessible from any of the Kubernetes cluster’s nodes.
-
-You can specify your own cluster IP address as part of a Service creation request. To do this, set the .spec.clusterIP field.
-The IP address that you choose must be a valid IPv4 or IPv6 address from within the service-cluster-ip-range CIDR range that is configured for the API server.
-
-Example:
-
-```
-# abc-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: my-service
-spec:
-  selector:
-    app: MyApp
-  ports:
-    - name: "myservice"
-      protocol: TCP
-      port: 8080
-      targetPort: 8080
-  clusterIP: 10.96.104.222
-```
-
 ### Getting a shell to a pod/container
 
 Get interactive shell to a Pod (if the Pod has multiple containers, you will login to a default one, i.e. the first container specified in the Pod’s config.):
@@ -743,6 +666,84 @@ for example
 ```
 k -v8 port-forward svc/myservice 3000:80
 ```
+
+## Notes
+
+### Network
+
+Kubernetes requires that each container in a cluster has a unique, routable IP. Kubernetes doesn’t assign IPs itself, leaving the task to third-party solutions.
+
+### Cronjob
+
+Looks k8s cronjobs default uses UTC, even if the master time zone is set to PDT.
+
+#### Suspend a cronjob
+
+```
+$ kubectl edit cronjobs/hellocron
+...
+  schedule: '*/1 * * * *'
+  successfulJobsHistoryLimit: 3
+  suspend: true <----
+...
+
+$ k get cronjob
+NAME        SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hellocron   */1 * * * *   True      0        68s             2m22s
+```
+
+#### View logs for cron job
+
+> A `Cron Job` creates Jobs on a time-based schedule
+
+> A `job` creates one or more pods and ensures that a specified number of them successfully terminate.
+
+All you need is to view logs for a pod that was created for the job.
+
+1. Find your job with `kubectl get jobs`. This will return your CronJob name with a timestamp
+
+2. Find pod for executed job `kubectl get pods -l job-name=your-job-@timestamp`
+
+3. Use `kubectl logs your-job-@timestamp-id` to view logs
+
+Here's an example of bash script that does all the above and outputs logs for every job's pod.
+
+```
+jobs=( $(kubectl get jobs --no-headers -o custom-columns=":metadata.name") )
+for job in "${jobs[@]}"
+do
+   pod=$(kubectl get pods -l job-name=$job --no-headers -o custom-columns=":metadata.name")
+   kubectl logs $pod
+done
+```
+
+### Sepcifying your own Cluster IP address
+
+Cluster IP is a virtual IP that is allocated by the K8s to a service. It is K8s internal IP.
+A Cluster IP makes it accessible from any of the Kubernetes cluster’s nodes.
+
+You can specify your own cluster IP address as part of a Service creation request. To do this, set the .spec.clusterIP field.
+The IP address that you choose must be a valid IPv4 or IPv6 address from within the service-cluster-ip-range CIDR range that is configured for the API server.
+
+Example:
+
+```
+# abc-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - name: "myservice"
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  clusterIP: 10.96.104.222
+```
+
 
 ## Errors
 
