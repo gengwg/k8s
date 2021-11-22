@@ -474,6 +474,15 @@ kubectl get secret mysecret --namespace=namespace1 -o yaml | sed 's/namespace: n
 kubectl get nodes -o json | jq '.items[].spec.taints'
 ```
 
+### List all Container images in all namespaces
+
+```
+kubectl get pods --all-namespaces -o jsonpath="{.items[*].spec.containers[*].image}" |\
+tr -s '[[:space:]]' '\n' |\
+sort |\
+uniq -c
+```
+
 ## Notes
 
 ### Network
