@@ -153,63 +153,6 @@ minikube addons list
 minikube addons enable dashboard
 ```
 
-## Helm
-
-### Install Helm
-
-https://helm.sh/docs/intro/install/
-
-#### Linux
-
-```
-wget https://get.helm.sh/helm-v3.3.4-linux-amd64.tar.gz
-sudo mv linux-amd64/helm /usr/local/bin/helm
-tar -zvxf helm-v3.3.4-linux-amd64.tar.gz
-```
-
-#### MacOS
-
-```
-brew install helm
-```
-
-### Add Repo
-
-```
-$ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-"prometheus-community" has been added to your repositories
-```
-
-### Uninstall chart release
-
-```
-helm list   # find the release name to delete
-helm uninstall <release_name>
-```
-
-### Get a local copy of chart
-
-```
-helm fetch prometheus-community/prometheus --untar
-```
-
-### Prepare a template to install on k8s
-
-```
-helm template myprom prometheus-community/prometheus > k8s-myprom.yaml
-kubectl apply -f k8s-myprom.yaml
-```
-
-### Install chart into a specific namespace
-
-```sh
-$ kubectl create ns monitoring
-$ helm install prometheus stable/prometheus-operator --namespace monitoring
-# uninstall need namespace name specified
-$ helm uninstall prometheus --namespace monitoring
-release "prometheus" uninstalled
-```
-
 ## Commands
 
 ### Mac Install a few k8s Tools
