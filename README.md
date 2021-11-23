@@ -213,6 +213,10 @@ brew install kubectl
 brew install kubectx
 brew install octant
 brew install kustomize
+brew install helm
+
+brew install kind
+brew install minikube
 ```
 
 Usage:
