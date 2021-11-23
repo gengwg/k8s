@@ -904,6 +904,36 @@ kubectl create clusterrolebinding system:anonymous --clusterrole=cluster-admin -
 
 kubectl create clusterrolebinding kube-apiserver:kubelet-apis --clusterrole=system:kubelet-api-admin --user=system:anonymous
 
+### WARNING: Kubernetes configuration file is group-readable. This is insecure. 
+
+```
+gengwg@gengwg-mbp:~$ helm template myprom prometheus-community/kube-prometheus-stack -n monitoring > k8s-myprom.yaml
+WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /Users/gengwg/.kube/config
+WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /Users/gengwg/.kube/config
+```
+
+===>
+
+Your `~/.kube/config` should only be readable by you. Use chmod to change the file's read/write permissions.
+
+#### Before
+
+```
+gengwg@gengwg-mbp:~$ ll .kube/
+total 48
+drwxr-x---  4 gengwg  staff   128 Apr 16  2021 cache
+-rw-r--r--  1 gengwg  staff  7751 Nov 22 16:16 config
+```
+
+#### After
+
+```
+gengwg@gengwg-mbp:~/.kube$ chmod 0600 config
+gengwg@gengwg-mbp:~/.kube$ ll config
+-rw-------  1 gengwg  staff  7751 Nov 22 16:16 config
+```
+
+
 ## Resources
 
 - https://github.com/kelseyhightower/kubernetes-the-hard-way
