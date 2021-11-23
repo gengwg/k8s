@@ -82,9 +82,10 @@ kubectl apply -f k8s-myprom.yaml
 
 ```sh
 $ kubectl create ns monitoring
-$ helm install prometheus stable/prometheus-operator --namespace monitoring
-# uninstall need namespace name specified
-$ helm uninstall prometheus --namespace monitoring
-release "prometheus" uninstalled
+gengwg@gengwg-mbp:~$ helm install hello-prom prometheus-community/kube-prometheus-stack -n monitoring
+gengwg@gengwg-mbp:~$ helm list -n monitoring
+NAME      	NAMESPACE 	REVISION	UPDATED                             	STATUS  	CHART                       	APP VERSION
+hello-prom	monitoring	1       	2021-11-23 10:03:43.545979 -0800 PST	deployed	kube-prometheus-stack-20.0.1	0.52.0
+gengwg@gengwg-mbp:~$ helm uninstall hello-prom -n monitoring
 ```
 
