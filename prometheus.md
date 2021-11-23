@@ -82,3 +82,16 @@ Forwarding from [::1]:3000 -> 3000
 Go to browser: 
 
 http://localhost:3000/
+
+### Install into a namespace
+
+All the same as above, just add `-n monitoring` to each command, i.e.:
+
+```
+$ kubectl create ns monitoring
+$ helm install hello-prom prometheus-community/kube-prometheus-stack -n monitoring
+$ kubectl --namespace monitoring get pods -l "release=hello-prom"
+$ kubectl get svc -n monitoring
+$ kubectl port-forward service/hello-prom-kube-prometheus-prometheus 9090:9090 -n monitoring
+$ kubectl port-forward service/hello-prom-grafana 3000:80 -n monitoring
+```
