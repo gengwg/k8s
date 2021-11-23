@@ -135,6 +135,12 @@ $ minikube start # first time takes long time
 🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
 ```
 
+### Start Minikube with a specific Kubernetes version
+
+```
+$ minikube start --kubernetes-version=v1.21.5
+```
+
 ### List Addons
 
 ```
