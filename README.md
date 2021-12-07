@@ -166,6 +166,11 @@ brew install helm
 
 brew install kind
 brew install minikube
+
+# k8s operator tools
+brew install kubebuilder
+brew install tilt
+
 ```
 
 Usage:
