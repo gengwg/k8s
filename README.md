@@ -627,6 +627,13 @@ k -v8 port-forward svc/myservice 3000:80
 
 ## Notes
 
+### Requests and limits 
+
+When you specify the resource `request` for Containers in a Pod, the scheduler uses this information to decide which node to place the Pod on. When you specify a resource `limit` for a Container, the kubelet enforces those limits so that the running container is not allowed to use more of that resource than the limit you set. The kubelet also reserves at least the request amount of that system resource specifically for that container to use.
+
+If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit.
+
+
 ### Network
 
 Kubernetes requires that each container in a cluster has a unique, routable IP. Kubernetes doesn’t assign IPs itself, leaving the task to third-party solutions.
