@@ -635,6 +635,7 @@ When you specify the resource `request` for Containers in a Pod, the scheduler u
 
 If the node where a Pod is running has enough of a resource available, it's possible (and allowed) for a container to use more resource than its request for that resource specifies. However, a container is not allowed to use more than its resource limit.
 
+Per-deployment settings override the global namespace settings.
 
 ### Network
 
