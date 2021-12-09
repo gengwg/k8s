@@ -637,6 +637,16 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Per-deployment settings override the global namespace settings.
 
+### CRD
+
+CRD — Custom Resource Definition — defines a Custom Resource which is not available in the default Kubernetes implementation.
+
+The CRD alone doesn’t do anything, a controller/operator needs to be implemented to create and manage the resources for the CRD 
+
+Each API group-version contains one or more kubernetes API types, which is called as a ‘Kind’.
+
+A Kind consists of Metadata + Spec + Status + List. Typically the spec contains the desired state and the status contains the observed state.
+
 ### Network
 
 Kubernetes requires that each container in a cluster has a unique, routable IP. Kubernetes doesn’t assign IPs itself, leaving the task to third-party solutions.
