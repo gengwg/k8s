@@ -294,6 +294,16 @@ $ kubectl proxy --address=0.0.0.0 --accept-hosts=.*
 Starting to serve on [::]:8001
 ```
 
+### Kube-proxy
+
+Start a kube proxy server which will act as a reverse proxy for the client.
+
+```
+kubectl proxy --port <PORT_NUMBER> &
+curl -s http://localhost:<PORT_NUMBER>/
+curl -s http://localhost:<PORT_NUMBER>/api/v1/nodes | jq '.items[].metadata.labels'
+```
+
 ### Get pods using label
 
 ```sh
