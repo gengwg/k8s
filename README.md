@@ -171,6 +171,8 @@ brew install minikube
 brew install kubebuilder
 brew install tilt
 
+brew install krew
+
 ```
 
 Usage:
