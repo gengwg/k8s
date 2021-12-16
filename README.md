@@ -172,7 +172,7 @@ brew install kubebuilder
 brew install tilt
 
 brew install krew
-
+kubectl krew update
 ```
 
 Usage:
