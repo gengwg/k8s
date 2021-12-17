@@ -734,6 +734,20 @@ spec:
   clusterIP: 10.96.104.222
 ```
 
+### kube-proxy config files location
+
+the kube-proxy process and its config files reside inside the kube-proxy pod.
+
+```
+gengwg@cp:~$ kubectl get pods -n kube-system -o wide | grep proxy
+kube-proxy-mjrqg                           1/1     Running   1 (2d19h ago)   5d12h   10.2.0.4         cp       <none>           <none>
+kube-proxy-mxx6f                           1/1     Running   1 (2d19h ago)   5d12h   10.2.0.5         worker   <none>           <none>
+gengwg@cp:~$ kubectl exec -it kube-proxy-mjrqg -n kube-system -- /bin/sh
+# find / -name config.conf
+/var/lib/kube-proxy/config.conf
+/var/lib/kube-proxy/..2021_12_08_06_04_17.573220252/config.conf
+# cat /var/lib/kube-proxy/config.conf
+```
 
 ## Errors
 
