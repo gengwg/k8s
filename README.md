@@ -203,6 +203,8 @@ $ k get pods
 
 ### kubectl switch k8s context
 
+A kubernetes context is just a set of access parameters that contains a Kubernetes cluster, a user, and a namespace. kubernetes Context is essentially the configuration that you use to access a particular cluster & namespace with a user account.
+
 The context in Kubernetes is like a connection to a server that tells Kubernetes which Cluster to connect to.
 
 When we set the context, Kubernetes will send all the command to the cluster that is set in the context.
