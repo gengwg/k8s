@@ -749,6 +749,14 @@ gengwg@cp:~$ kubectl exec -it kube-proxy-mjrqg -n kube-system -- /bin/sh
 # cat /var/lib/kube-proxy/config.conf
 ```
 
+### Find out what container runtime is used on a node
+
+```
+$ kubectl get nodes -o wide
+NAME                 STATUS   ROLES    AGE    VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                                     KERNEL-VERSION           CONTAINER-RUNTIME
+kind-control-plane   Ready    master   246d   v1.19.1   172.18.0.2    <none>        Ubuntu Groovy Gorilla (development branch)   5.15.7-100.fc34.x86_64   containerd://1.4.0
+```
+
 ## Errors
 
 ### `/data` directory permission issues
@@ -927,7 +935,13 @@ gengwg@gengwg-mbp:~/.kube$ ll config
 -rw-------  1 gengwg  staff  7751 Nov 22 16:16 config
 ```
 
+### “kubectl get no” command is not showing master nodes
+
+it looks like kubelet is not deployed onto the master nodes. This would be the reason why they don’t show up in a kubectl get nodes command.
+
+Because the kubectl command is working it tells me the api servers are running fine.
 
 ## Resources
 
 - https://github.com/kelseyhightower/kubernetes-the-hard-way
+
