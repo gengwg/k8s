@@ -766,6 +766,47 @@ controlplane ~ ➜  kubectl run nginx --image=nginx
 pod/nginx created
 ```
 
+### Create a pod yaml using command line
+
+```
+$ kubectl run redis --image=redis --dry-run=client -o yaml > pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: redis
+  name: redis
+spec:
+  containers:
+  - image: redis
+    name: redis
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+```
+### edit a running pod config
+
+```
+kubectl edit pod redis
+```
+
+### Scale replica set
+
+```
+# modify `replicas: 3` in the replicaset defition yaml, then replace the original replicaset:
+kubectl replace -f replicaset.defition.yaml
+
+kubectl scale --replicas=3 -f replicaset-defition.yaml
+
+# specify type and name of the replica set.
+kubectl scale --replicas=3 replicaset myapp-replicaset
+
+# edit the replicaset
+controlplane ~ ✖ kubectl edit replicasets.apps new-replica-set
+```
+
 ## Errors
 
 ### `/data` directory permission issues
