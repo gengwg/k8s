@@ -759,6 +759,13 @@ NAME                 STATUS   ROLES    AGE    VERSION   INTERNAL-IP   EXTERNAL-I
 kind-control-plane   Ready    master   246d   v1.19.1   172.18.0.2    <none>        Ubuntu Groovy Gorilla (development branch)   5.15.7-100.fc34.x86_64   containerd://1.4.0
 ```
 
+### Create a pod using command line
+
+```
+controlplane ~ ➜  kubectl run nginx --image=nginx
+pod/nginx created
+```
+
 ## Errors
 
 ### `/data` directory permission issues
@@ -942,6 +949,13 @@ gengwg@gengwg-mbp:~/.kube$ ll config
 it looks like kubelet is not deployed onto the master nodes. This would be the reason why they don’t show up in a kubectl get nodes command.
 
 Because the kubectl command is working it tells me the api servers are running fine.
+
+### list all pods and its nodes
+
+```
+kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName --all-namespaces
+kubectl get pod -o=custom-columns=NODE:.spec.nodeName,POD:.metadata.name --all-namespaces
+```
 
 ## Resources
 
