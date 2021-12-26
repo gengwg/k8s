@@ -807,6 +807,14 @@ kubectl scale --replicas=3 replicaset myapp-replicaset
 controlplane ~ ✖ kubectl edit replicasets.apps new-replica-set
 ```
 
+### get resources without header
+
+use for wc for example.
+
+```
+$ kubectl get po -n kube-system --no-headers
+```
+
 ## Errors
 
 ### `/data` directory permission issues
