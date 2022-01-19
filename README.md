@@ -815,6 +815,12 @@ use for wc for example.
 $ kubectl get po -n kube-system --no-headers
 ```
 
+### Expose service with a name
+
+```
+kubectl expose pod messaging --name messaging-service --port 6379 --target-port 6379
+```
+
 ## Errors
 
 ### `/data` directory permission issues
