@@ -171,8 +171,10 @@ brew install minikube
 brew install kubebuilder
 brew install tilt
 
+# krew
 brew install krew
 kubectl krew update
+kubectl krew install access-matrix
 ```
 
 Usage:
