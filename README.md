@@ -819,6 +819,12 @@ kubectl scale --replicas=3 replicaset myapp-replicaset
 controlplane ~ ✖ kubectl edit replicasets.apps new-replica-set
 ```
 
+###  Scale down StatefulSet and record an annotation
+
+```
+k8s@terminal:~$ kubectl scale  StatefulSet/o3db --replicas=1  -n project-c13 --record
+```
+
 ### get resources without header
 
 use for wc for example.
