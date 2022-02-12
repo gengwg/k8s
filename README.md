@@ -839,6 +839,13 @@ $ kubectl get po -n kube-system --no-headers
 kubectl expose pod messaging --name messaging-service --port 6379 --target-port 6379
 ```
 
+### lists all Pods sorted by their AGE 
+
+```
+kubectl get pod -A --sort-by=.metadata.creationTimestamp
+```
+
+
 ## Errors
 
 ### `/data` directory permission issues

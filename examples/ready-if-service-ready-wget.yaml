@@ -18,3 +18,5 @@ spec:
         - sh
         - -c
         - 'wget -T2 -O- http://service-am-i-ready:80'   # note wget command
+#   Warning  Unhealthy  11s (x21 over 3m26s)  kubelet            Readiness probe failed:
+
