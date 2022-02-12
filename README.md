@@ -219,6 +219,7 @@ CURRENT   NAME              CLUSTER           AUTHINFO          NAMESPACE
           kind-my-cluster   kind-my-cluster   kind-my-cluster   
 $ kubectl config current-context
 kind-cluster2
+
 $ kubectl config use-context kind-kind
 Switched to context "kind-kind".
 $ kubectl config current-context
@@ -229,6 +230,15 @@ CURRENT   NAME              CLUSTER           AUTHINFO          NAMESPACE
 *         kind-kind         kind-kind         kind-kind         
           kind-my-cluster   kind-my-cluster   kind-my-cluster   
 ```
+
+Get contexts names only:
+
+```
+k config get-contexts -o name
+
+k config view -o jsonpath="{.contexts[*].name}"
+```
+
 
 ### Get kubernetes version
 
