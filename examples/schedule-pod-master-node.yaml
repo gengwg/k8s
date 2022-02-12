@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: pod1
+  name: pod1
+
+spec:
+  containers:
+  - image: httpd:2.4.41-alpine
+    name: pod1-container                  # change
+  tolerations:                            # add
+  - effect: NoSchedule                    # add
+    key: node-role.kubernetes.io/master   # add
+  nodeSelector:                           # add
+    node-role.kubernetes.io/master: ""    # add
+
+# $ kubectl apply -f schedule-pod-master-node.yaml 
+# pod/pod1 created
+#
+# $ kubectl get po -o wide
+# NAME   READY   STATUS    RESTARTS   AGE   IP           NODE                            NOMINATED NODE   READINESS GATES
+# pod1   1/1     Running   0          9s    10.244.0.6   kind-multi-node-control-plane   <none>           <none>
