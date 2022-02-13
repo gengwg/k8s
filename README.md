@@ -845,6 +845,14 @@ kubectl expose pod messaging --name messaging-service --port 6379 --target-port 
 kubectl get pod -A --sort-by=.metadata.creationTimestamp
 ```
 
+### Manual Scheduling
+
+The only thing a scheduler does, is that it sets the nodeName for a Pod declaration. How it finds the correct node to schedule on, that's a very much complicated matter and takes many variables into account.
+
+```
+spec:
+  nodeName: cluster2-master1
+```
 
 ## Errors
 
