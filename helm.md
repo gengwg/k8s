@@ -65,7 +65,7 @@ helm list   # find the release name to delete
 helm uninstall <release_name>
 ```
 
-### Get a local copy of chart
+### Download a local copy of chart
 
 ```
 helm fetch prometheus-community/prometheus --untar
