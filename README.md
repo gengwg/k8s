@@ -854,6 +854,8 @@ spec:
   nodeName: cluster2-master1
 ```
 
+It looks like our Pod is running on the master now as requested, although no tolerations were specified. Only the scheduler takes tains/tolerations/affinity into account when finding the correct node name. That's why its still possible to assign Pods manually directly to a master node and skip the scheduler.
+
 ## Errors
 
 ### `/data` directory permission issues
