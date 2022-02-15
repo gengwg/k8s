@@ -854,6 +854,14 @@ spec:
   nodeName: cluster2-master1
 ```
 
+### bash auto-completion
+
+```
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+echo 'alias k=kubectl' >>~/.bashrc
+echo 'complete -F __start_kubectl k' >>~/.bashrc
+```
+
 ## Errors
 
 ### `/data` directory permission issues
