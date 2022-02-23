@@ -791,6 +791,14 @@ echo 'alias k=kubectl' >>~/.bashrc
 echo 'complete -F __start_kubectl k' >>~/.bashrc
 ```
 
+
+### list all pods and its nodes
+
+```
+kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName --all-namespaces
+kubectl get pod -o=custom-columns=NODE:.spec.nodeName,POD:.metadata.name --all-namespaces
+```
+
 ## Errors
 
 ### `/data` directory permission issues
@@ -975,11 +983,17 @@ it looks like kubelet is not deployed onto the master nodes. This would be the r
 
 Because the kubectl command is working it tells me the api servers are running fine.
 
-### list all pods and its nodes
+### the server rejected our request for an unknown reason
 
 ```
-kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName --all-namespaces
-kubectl get pod -o=custom-columns=NODE:.spec.nodeName,POD:.metadata.name --all-namespaces
+$ k get no
+Error from server (BadRequest): the server rejected our request for an unknown reason
+```
+
+It was because I accidentally specified http instead of https. you need to specify https in `clusters[].cluster.server`.
+
+```
+    server: k8s.example.com:6443
 ```
 
 ## Resources
