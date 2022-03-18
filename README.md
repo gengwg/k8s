@@ -799,6 +799,12 @@ kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:
 kubectl get pod -o=custom-columns=NODE:.spec.nodeName,POD:.metadata.name --all-namespaces
 ```
 
+### Get cluster cluster role binding for a group
+
+```
+$ kubectl get clusterrolebindings -o json | jq -r '.items[] | select(.subjects[0].kind=="Group") | select(.subjects[0].   name=="Some-AD-Group") | .metadata.name'
+```
+
 ## Errors
 
 ### `/data` directory permission issues
