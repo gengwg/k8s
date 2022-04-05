@@ -827,6 +827,28 @@ CACERT=${SERVICEACCOUNT}/ca.crt
 curl --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" -X GET ${APISERVER}/api
 ```
 
+### Delete Worker Nodes from Kubernetes Cluster
+
+1. Cordon the nodes
+
+```
+kubectl cordon workernode
+```
+
+2. Drain the nodes
+
+Drain the nodes to evict the pods currently running on the nodes. You might have to ignore daemonsets and local-data in the machine.
+
+```
+kubectl drain workernode  --delete-local-data --ignore-daemonsets --force
+```
+
+3. Delete the nodes
+
+```
+for i in {3..6}; do kubectl delete node  workernode11$i; done
+```
+
 ## Errors
 
 ### `/data` directory permission issues
