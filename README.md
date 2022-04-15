@@ -427,6 +427,12 @@ $ kubectl get DaemonSet calico-node -n kube-system -o yaml > calico-daemonset.ya
 
 ### View k8s resources and shortnames
 
+Or use:
+
+```
+  $ kubectl api-resources -o wide
+```
+
 ```
 $ kubectl api-resources
 NAME                              SHORTNAMES   APIVERSION                               NAMESPACED   KIND
