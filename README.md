@@ -849,6 +849,13 @@ kubectl drain workernode  --delete-local-data --ignore-daemonsets --force
 for i in {3..6}; do kubectl delete node  workernode11$i; done
 ```
 
+### Run pod on specific node
+
+```
+$ kubectl run test --image=nginx:1.21.4-alpine --overrides='{"apiVersion": "v1", "spec": {"nodeSelector": { "kubernetes.io/hostname": "node1" }}}'
+pod/test created
+```
+
 ## Errors
 
 ### `/data` directory permission issues
