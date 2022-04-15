@@ -495,6 +495,52 @@ storageclasses                    sc           storage.k8s.io/v1                
 volumeattachments                              storage.k8s.io/v1                        false        VolumeAttachment
 ```
 
+### view all API versions supported on the server, in the form of “group/version”
+
+```
+$ k api-versions
+admissionregistration.k8s.io/v1
+admissionregistration.k8s.io/v1beta1
+apiextensions.k8s.io/v1
+apiextensions.k8s.io/v1beta1
+apiregistration.k8s.io/v1
+apiregistration.k8s.io/v1beta1
+apps/v1
+authentication.k8s.io/v1
+authentication.k8s.io/v1beta1
+authorization.k8s.io/v1
+authorization.k8s.io/v1beta1
+autoscaling/v1
+autoscaling/v2beta1
+autoscaling/v2beta2
+batch/v1
+batch/v1beta1
+certificates.k8s.io/v1
+certificates.k8s.io/v1beta1
+coordination.k8s.io/v1
+coordination.k8s.io/v1beta1
+discovery.k8s.io/v1
+discovery.k8s.io/v1beta1
+events.k8s.io/v1
+events.k8s.io/v1beta1
+extensions/v1beta1
+flowcontrol.apiserver.k8s.io/v1beta1
+metrics.k8s.io/v1beta1
+networking.k8s.io/v1
+networking.k8s.io/v1beta1
+node.k8s.io/v1
+node.k8s.io/v1beta1
+policy/v1
+policy/v1beta1
+rbac.authorization.k8s.io/v1
+rbac.authorization.k8s.io/v1beta1
+scheduling.k8s.io/v1
+scheduling.k8s.io/v1beta1
+storage.k8s.io/v1
+storage.k8s.io/v1beta1
+v1
+```
+
 ### Get more detailed outputs using -owide option
 
 ```
@@ -854,6 +900,13 @@ for i in {3..6}; do kubectl delete node  workernode11$i; done
 ```
 $ kubectl run test --image=nginx:1.21.4-alpine --overrides='{"apiVersion": "v1", "spec": {"nodeSelector": { "kubernetes.io/hostname": "node1" }}}'
 pod/test created
+```
+
+### To find which apiVersion to use for a resource
+
+```
+$ k api-resources |  grep pods
+pods                              po           v1                                     true         Pod
 ```
 
 ## Errors
