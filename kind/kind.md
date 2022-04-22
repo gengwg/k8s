@@ -96,4 +96,8 @@ $ kind create cluster --name my-cluster
 $ kind create cluster --name cluster2 --config kind.yaml
 ```
 
+### Create a cluster with specific k8s version
 
+```
+$ kind create cluster --image kindest/node:v1.22.9
+``` 
