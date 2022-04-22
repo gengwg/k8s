@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: example
+  #namespace: gengwg
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 600
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+          - image: busybox:1.31.1
+            command:
+            - sleep
+            - "10" # increase to 100 to test successful
+            imagePullPolicy: Always
+            name: mycontainer
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+      ttlSecondsAfterFinished: 180
+  schedule: '*/1 * * * *'
+  successfulJobsHistoryLimit: 3
+  suspend: false
