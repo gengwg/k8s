@@ -164,6 +164,10 @@ Get contexts names only:
 k config get-contexts -o name
 
 k config view -o jsonpath="{.contexts[*].name}"
+
+# without kubectl
+$ cat ~/.kube/config | grep current | sed -e "s/current-context: //"
+kind-kind-multi-node
 ```
 
 
@@ -568,6 +572,19 @@ podinfo-7466f7f75b-wdj62   1/1     Running   0          7d15h   10.244.0.13   ki
 $ kubectl get pods --show-labels
 NAME                          READY   STATUS    RESTARTS   AGE    LABELS
 helloworld                    1/1     Running   0          27s    application_type=ui,author=karthequian,env=production,release-version=1.0
+
+$ k describe node kind-multi-node-control-plane  | grep Labels -A 10
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/arch=amd64
+                    kubernetes.io/hostname=kind-multi-node-control-plane
+                    kubernetes.io/os=linux
+                    node-role.kubernetes.io/control-plane=
+                    node-role.kubernetes.io/master=
+                    node.kubernetes.io/exclude-from-external-load-balancers=
+Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: unix:///run/containerd/containerd.sock
+                    node.alpha.kubernetes.io/ttl: 0
+                    volumes.kubernetes.io/controller-managed-attach-detach: true
 ```
 ### Modify labels to a running pod
 
