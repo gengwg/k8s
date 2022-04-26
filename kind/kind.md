@@ -67,6 +67,9 @@ NAME                            STATUS     ROLES    AGE   VERSION
 kind-multi-node-control-plane   NotReady   master   51s   v1.19.1
 kind-multi-node-worker          NotReady   <none>   16s   v1.19.1
 kind-multi-node-worker2         NotReady   <none>   16s   v1.19.1
+
+# delete
+$ kind delete cluster --name kind-multi-node
 ```
 
 ### Update kind binary:
