@@ -946,6 +946,19 @@ k -n project-hamster create rolebinding processor \
   --serviceaccount project-hamster:processor
 ```
 
+### shows the latest events in the whole cluster, ordered by time.
+
+```
+kubectl get events -A --sort-by=.metadata.creationTimestamp
+```
+
+### Write the names of all namespaced Kubernetes resources (like Pod, Secret, ConfigMap...)
+
+```
+k api-resources -h
+k api-resources --namespaced -o name
+```
+
 ## Errors
 
 ### `/data` directory permission issues
