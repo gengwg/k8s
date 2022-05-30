@@ -1,0 +1,68 @@
+# Question 13 | Multi Containers and Pod shared Volume
+# 
+# Create a Pod named multi-container-playground in Namespace default with three containers, named c1, c2 and c3. There should be a volume attached to that Pod and mounted into every container, but the volume shouldn't be persisted or shared with other Pods.
+# 
+# Container c1 should be of image nginx:1.17.6-alpine and have the name of the node where its Pod is running available as environment variable MY_NODE_NAME.
+# 
+# Container c2 should be of image busybox:1.31.1 and write the output of the date command every second in the shared volume into file date.log. You can use while true; do date >> /your/vol/path/date.log; sleep 1; done for this.
+# 
+# Container c3 should be of image busybox:1.31.1 and constantly send the content of file date.log from the shared volume to stdout. You can use tail -f /your/vol/path/date.log for this.
+# 
+# Check the logs of container c3 to confirm correct setup.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: multi-container-playground
+  name: multi-container-playground
+spec:
+  containers:
+  - image: nginx:1.17.6-alpine
+    name: c1
+    resources: {}
+    env:
+      - name: MY_NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+    volumeMounts:
+      - name: vol
+        mountPath: /vol
+
+  - image: busybox:1.31.1
+    name: c2
+    command: ["sh", "-c", "while true; do date >> /vol/date.log; sleep 1; done"]
+    volumeMounts:
+    - name: vol
+      mountPath: /vol
+
+  - image: busybox:1.31.1
+    name: c3
+    command: ["sh", "-c", "tail -f /vol/date.log"]
+    volumeMounts:
+    - name: vol
+      mountPath: /vol
+
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  volumes:
+    - name: vol
+      emptyDir: {}
+status: {}
+
+
+## Verify
+#
+# $ k get po multi-container-playground
+# NAME                         READY   STATUS    RESTARTS   AGE
+# multi-container-playground   3/3     Running   0          5s
+# $ k exec multi-container-playground -c c1 -- env | grep MY
+# MY_NODE_NAME=kind-multi-nod-worker2
+# gengwg@elaine:~/nc/github/k8s/examples$ k logs multi-container-playground -c c3
+# Mon May 30 19:00:42 UTC 2022
+# Mon May 30 19:00:43 UTC 2022
+# Mon May 30 19:00:44 UTC 2022
+# Mon May 30 19:00:45 UTC 2022
+# ....
