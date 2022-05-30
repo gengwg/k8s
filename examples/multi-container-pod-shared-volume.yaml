@@ -53,7 +53,10 @@ spec:
 status: {}
 
 
+
 ## Verify
+#
+# $ k run multi-container-playground --image=nginx:1.17.6-alpine --dry-run=client -o yaml > 13.yaml
 #
 # $ k get po multi-container-playground
 # NAME                         READY   STATUS    RESTARTS   AGE
