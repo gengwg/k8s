@@ -810,6 +810,33 @@ spec:
   restartPolicy: Always
 status: {}
 ```
+
+Create a pod yaml with shell command:
+
+```
+$ k -n secret run secret-pod --image=busybox:1.31.1 --dry-run=client -o yaml -- sh -c "sleep 5d"
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: secret-pod
+  name: secret-pod
+  namespace: secret
+spec:
+  containers:
+  - args:
+    - sh
+    - -c
+    - sleep 5d
+    image: busybox:1.31.1
+    name: secret-pod
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+```
 ### edit a running pod config
 
 ```
