@@ -932,6 +932,20 @@ $ k api-resources |  grep pods
 pods                              po           v1                                     true         Pod
 ```
 
+### Create a role only create Secrets and ConfigMaps in that Namespace
+
+```
+kubectl -n project-hamster create role accessor --verb=create --resource=secret --resource=configmap
+```
+
+### Now we bind the Role to the ServiceAccount
+
+```
+k -n project-hamster create rolebinding processor \
+  --role processor \
+  --serviceaccount project-hamster:processor
+```
+
 ## Errors
 
 ### `/data` directory permission issues
