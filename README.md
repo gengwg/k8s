@@ -373,8 +373,24 @@ curl localhost:9090/graph
 ### Create Secret
 
 ```
-$ kubectl create secret generic apikey --from-literal=api_key=1234567
-secret/apikey created
+kubectl create secret generic apikey --from-literal=api_key=1234567
+
+# Create a new Secret in Namespace secret called secret2 which should contain user=user1 and pass=1234
+k -n secret create secret generic secret2 --from-literal=user=user1 --from-literal=pass=1234
+
+# check it
+$ k describe secrets -n secret secret2
+Name:         secret2
+Namespace:    secret
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+pass:  4 bytes
+user:  5 bytes
 ```
 
 ### Copy kubernetes secret from one namespace to another
@@ -957,6 +973,12 @@ kubectl get events -A --sort-by=.metadata.creationTimestamp
 ```
 k api-resources -h
 k api-resources --namespaced -o name
+```
+
+### find out the node a pod scheduled on
+
+```
+k get po alpine -o jsonpath="{.spec.nodeName}"
 ```
 
 ## Errors
