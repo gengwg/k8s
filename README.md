@@ -878,6 +878,15 @@ $ kubectl get po -n kube-system --no-headers
 kubectl expose pod messaging --name messaging-service --port 6379 --target-port 6379
 ```
 
+Expose node port:
+
+```
+k expose pod my-static-pod-cluster3-master1 \
+  --name static-pod-service \
+  --type=NodePort \
+  --port 80
+```
+
 ### lists all Pods sorted by their AGE 
 
 ```
