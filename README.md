@@ -1017,6 +1017,45 @@ k api-resources --namespaced -o name
 k get po alpine -o jsonpath="{.spec.nodeName}"
 ```
 
+### Lists all Pod names and their requests/limit
+
+```
+$ k get pod -o jsonpath="{range .items[*]} {.metadata.name}{.spec.containers[*].resources}{'\n'}" -n kube-system
+ coredns-558bd4d5db-9wf2b{"limits":{"memory":"170Mi"},"requests":{"cpu":"100m","memory":"70Mi"}}
+ coredns-558bd4d5db-td76k{"limits":{"memory":"170Mi"},"requests":{"cpu":"100m","memory":"70Mi"}}
+ etcd-kind-multi-nod-control-plane{"requests":{"cpu":"100m","ephemeral-storage":"100Mi","memory":"100Mi"}}
+ kindnet-4cbhq{"limits":{"cpu":"100m","memory":"50Mi"},"requests":{"cpu":"100m","memory":"50Mi"}}
+ kindnet-df25z{"limits":{"cpu":"100m","memory":"50Mi"},"requests":{"cpu":"100m","memory":"50Mi"}}
+ kindnet-pgjxm{"limits":{"cpu":"100m","memory":"50Mi"},"requests":{"cpu":"100m","memory":"50Mi"}}
+ kube-apiserver-kind-multi-nod-control-plane{"requests":{"cpu":"250m"}}
+ kube-controller-manager-kind-multi-nod-control-plane{"requests":{"cpu":"200m"}}
+ kube-proxy-5ph6f{}
+ kube-proxy-jd6kv{}
+ kube-proxy-qffn2{}
+ kube-scheduler-kind-multi-nod-control-plane{"requests":{"cpu":"100m"}}
+ metrics-server-6744b4c64f-cwgnw{}
+
+$ k describe pod -n kube-system | egrep "^(Name:|    Requests:)" -A1
+
+# BestEffort Pods don't have any memory or cpu limits or requests defined.
+$ k get pods -n kube-system -o jsonpath="{range .items[*]}{.metadata.name} {.status.qosClass}{'\n'}"
+coredns-558bd4d5db-9wf2b Burstable
+coredns-558bd4d5db-td76k Burstable
+etcd-kind-multi-nod-control-plane Burstable
+kindnet-4cbhq Guaranteed
+kindnet-df25z Guaranteed
+kindnet-pgjxm Guaranteed
+kube-apiserver-kind-multi-nod-control-plane Burstable
+kube-controller-manager-kind-multi-nod-control-plane Burstable
+kube-proxy-5ph6f BestEffort
+kube-proxy-jd6kv BestEffort
+kube-proxy-qffn2 BestEffort
+kube-scheduler-kind-multi-nod-control-plane Burstable
+metrics-server-6744b4c64f-cwgnw BestEffort
+```
+
+ists all Pod names and their requests/limit
+
 ## Errors
 
 ### `/data` directory permission issues
