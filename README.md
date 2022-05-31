@@ -1065,6 +1065,25 @@ $ k auth can-i get secret --as system:serviceaccount:project-hamster:secret-read
 yes
 ```
 
+### Delete all resources using label
+
+```
+$ k run check-ip --image=httpd:2.4.41-alpine
+pod/check-ip created
+$ k expose pod check-ip --name check-ip-service --port 80
+service/check-ip-service exposed
+$ k get svc,ep -l run=check-ip
+NAME                       TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+service/check-ip-service   ClusterIP   10.96.228.166   <none>        80/TCP    7s
+
+NAME                         ENDPOINTS        AGE
+endpoints/check-ip-service   10.244.1.10:80   7s
+
+$ k delete all -l run=check-ip
+pod "check-ip" deleted
+service "check-ip-service" deleted
+```
+
 ## Errors
 
 ### `/data` directory permission issues
