@@ -667,6 +667,10 @@ k -v8 port-forward svc/myservice 3000:80
 
 every command needs a namespace and context to work. Defaults are used if not provided.
 
+### Services
+
+Kubernetes Services are implemented using iptables rules (with default config) on all nodes. Every time a Service has been altered, created, deleted or Endpoints of a Service have changed, the kube-apiserver contacts every node's kube-proxy to update the iptables rules according to the current state.
+
 ### Requests and limits 
 
 When you specify the resource `request` for Containers in a Pod, the scheduler uses this information to decide which node to place the Pod on. When you specify a resource `limit` for a Container, the kubelet enforces those limits so that the running container is not allowed to use more of that resource than the limit you set. The kubelet also reserves at least the request amount of that system resource specifically for that container to use.
@@ -811,7 +815,7 @@ spec:
 status: {}
 ```
 
-Create a pod yaml with shell command:
+Create a pod yaml with shell args:
 
 ```
 $ k -n secret run secret-pod --image=busybox:1.31.1 --dry-run=client -o yaml -- sh -c "sleep 5d"
