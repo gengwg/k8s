@@ -1054,7 +1054,12 @@ kube-scheduler-kind-multi-nod-control-plane Burstable
 metrics-server-6744b4c64f-cwgnw BestEffort
 ```
 
-ists all Pod names and their requests/limit
+### Check if a user/serviceaccount is allowed do run a command
+
+```
+$ k auth can-i get secret --as system:serviceaccount:project-hamster:secret-reader
+yes
+```
 
 ## Errors
 
