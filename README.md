@@ -1095,6 +1095,17 @@ $ kubectl cp myfile nginx:/
 $ kubectl exec -it nginx -- ls /myfile
 ```
 
+### To list all Pods running on a specific Node in the all Namespaces
+
+```
+$ kubectl get pods --field-selector spec.nodeName=kind-multi-nod-worker2 --all-namespaces
+NAMESPACE       NAME                         READY   STATUS    RESTARTS   AGE
+default         alpine                       1/1     Running   70         7d20h
+default         multi-container-playground   3/3     Running   0          7d20h
+kube-system     kindnet-df25z                1/1     Running   1          44d
+kube-system     kube-proxy-jd6kv             1/1     Running   1          44d
+project-tiger   ds-important-qqtqs           1/1     Running   0          22d
+```
 ## Errors
 
 ### `/data` directory permission issues
