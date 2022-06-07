@@ -1084,6 +1084,17 @@ pod "check-ip" deleted
 service "check-ip-service" deleted
 ```
 
+### Copy file between a pod and local machine
+
+```
+# pod --> local
+$ kubectl cp nginx:docker-entrypoint.sh /tmp/docker-entrypoint.sh
+
+# local --> pod
+$ kubectl cp myfile nginx:/
+$ kubectl exec -it nginx -- ls /myfile
+```
+
 ## Errors
 
 ### `/data` directory permission issues
