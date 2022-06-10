@@ -839,8 +839,48 @@ spec:
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}
+```
+
+Create a pod YAML template with command
 
 ```
+$ kubectl run busy --image=busybox --restart=Never --dry-run=client -o yaml --command -- env 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: busy
+  name: busy
+spec:
+  containers:
+  - command:
+    - env
+    image: busybox
+    name: busy
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+```
+
+Get the YAML for a new ResourceQuota called 'myrq' with hard limits of 1 CPU, 1G memory and 2 pods
+
+```
+$ k create quota myrq --hard=cpu=1,memory=1G,pods=2 --dry-run=client -o yaml
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  creationTimestamp: null
+  name: myrq
+spec:
+  hard:
+    cpu: "1"
+    memory: 1G
+    pods: "2"
+status: {}
+```
+
 ### edit a running pod config
 
 ```

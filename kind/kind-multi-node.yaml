@@ -1,3 +1,9 @@
+# create
+# kind create cluster --config kind-multi-node.yaml --name kind-multi-node
+#
+# delete
+# $ kind delete cluster --name kind-multi-node
+
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 # One control plane node and two "workers".
