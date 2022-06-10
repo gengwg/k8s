@@ -1170,6 +1170,30 @@ kube-system     kube-proxy-jd6kv             1/1     Running   1          44d
 project-tiger   ds-important-qqtqs           1/1     Running   0          22d
 ```
 
+### Change pod's image 
+
+Note: The RESTARTS column should contain 0 initially (ideally - it could be any number)
+
+
+```
+$ k get po
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          4m1s
+
+# kubectl set image POD/POD_NAME CONTAINER_NAME=IMAGE_NAME:TAG
+kubectl set image pod/nginx nginx=nginx:1.7.1
+pod/nginx image updated
+
+kubectl describe po nginx # you will see an event 'Container will be killed and recreated'
+....
+  Normal  Killing    12s   kubelet            Container nginx definition changed, will be restarted
+  Normal  Pulling    12s   kubelet            Pulling image "nginx:1.7.1"
+
+kubectl get po nginx -w # watch it
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   1          4m58s
+```
+
 ## Errors
 
 ### `/data` directory permission issues
