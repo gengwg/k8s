@@ -881,6 +881,29 @@ spec:
 status: {}
 ```
 
+Create a pod with image nginx called nginx and expose traffic on port 80
+
+```
+$ kubectl run nginx --image=nginx --restart=Never --port=80 --dry-run=client -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    ports:
+    - containerPort: 80
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+```
+
 ### edit a running pod config
 
 ```
@@ -1146,6 +1169,7 @@ kube-system     kindnet-df25z                1/1     Running   1          44d
 kube-system     kube-proxy-jd6kv             1/1     Running   1          44d
 project-tiger   ds-important-qqtqs           1/1     Running   0          22d
 ```
+
 ## Errors
 
 ### `/data` directory permission issues
