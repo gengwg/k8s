@@ -904,6 +904,13 @@ spec:
 status: {}
 ```
 
+Create pod with env
+
+```
+kubectl run nginx --image=nginx --restart=Never --env=var1=val1
+kubectl run nginx --restart=Never --image=nginx --env=var1=val1 -it --rm -- env
+```
+
 ### edit a running pod config
 
 ```
