@@ -1211,6 +1211,9 @@ NGINX_IP=$(kubectl get pod nginx -o jsonpath='{.status.podIP}')
 $ kubectl run busybox --image=busybox  --rm -it --restart=Never -- wget -O- $NGINX_IP:80
 # or
 kubectl run busybox --image=busybox --env="NGINX_IP=$NGINX_IP" --rm -it --restart=Never -- sh -c 'wget -O- $NGINX_IP:80'
+
+# one liner
+$ kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- $(kubectl get pod nginx -o jsonpath='{.status.podIP}:{.spec.containers[0].ports[0].containerPort}')
 ```
 
 ## Errors
