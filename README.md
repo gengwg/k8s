@@ -1224,6 +1224,20 @@ kubectl logs nginx -p
 kubectl logs nginx --previous
 ```
 
+### Create a busybox pod that echoes 'hello world' and then exits
+
+```
+kubectl run busybox --image=busybox -it --restart=Never -- echo 'hello world'
+# or
+kubectl run busybox --image=busybox -it --restart=Never -- /bin/sh -c 'echo hello world'
+```
+
+### Do the same, but have the pod deleted automatically when it's completed
+
+```
+kubectl run busybox --image=busybox -it --rm --restart=Never -- /bin/sh -c 'echo hello world'
+```
+
 ## Errors
 
 ### `/data` directory permission issues
