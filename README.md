@@ -1198,6 +1198,21 @@ $ kubectl get po nginx -o jsonpath='{.spec.containers[].image}{"\n"}'
 nginx:1.7.1
 ```
 
+### Get nginx pod's ip created in previous step, use a temp busybox image to wget its '/'
+
+```
+# manually
+$ kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- 10.244.2.5:80
+
+# advanced
+# Get IP of the nginx pod
+NGINX_IP=$(kubectl get pod nginx -o jsonpath='{.status.podIP}')
+# create a temp busybox pod
+$ kubectl run busybox --image=busybox  --rm -it --restart=Never -- wget -O- $NGINX_IP:80
+# or
+kubectl run busybox --image=busybox --env="NGINX_IP=$NGINX_IP" --rm -it --restart=Never -- sh -c 'wget -O- $NGINX_IP:80'
+```
+
 ## Errors
 
 ### `/data` directory permission issues
