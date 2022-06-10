@@ -1216,6 +1216,14 @@ kubectl run busybox --image=busybox --env="NGINX_IP=$NGINX_IP" --rm -it --restar
 $ kubectl run busybox --image=busybox --rm -it --restart=Never -- wget -O- $(kubectl get pod nginx -o jsonpath='{.status.podIP}:{.spec.containers[0].ports[0].containerPort}')
 ```
 
+### If pod crashed and restarted, get logs about the previous instance
+
+```
+kubectl logs nginx -p
+# or
+kubectl logs nginx --previous
+```
+
 ## Errors
 
 ### `/data` directory permission issues
