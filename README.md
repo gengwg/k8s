@@ -1192,6 +1192,10 @@ kubectl describe po nginx # you will see an event 'Container will be killed and 
 kubectl get po nginx -w # watch it
 NAME    READY   STATUS    RESTARTS   AGE
 nginx   1/1     Running   1          4m58s
+
+# Note: you can check pod's image by running
+$ kubectl get po nginx -o jsonpath='{.spec.containers[].image}{"\n"}'
+nginx:1.7.1
 ```
 
 ## Errors
