@@ -71,6 +71,13 @@ helm uninstall <release_name>
 helm fetch prometheus-community/prometheus --untar
 ```
 
+
+### Install a local copy of chart
+
+```
+helm install -f values.yaml rbac-manager . -n rbac-manager
+```
+
 ### Prepare a template to install on k8s
 
 ```
