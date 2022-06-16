@@ -967,6 +967,12 @@ k expose pod my-static-pod-cluster3-master1 \
 kubectl get pod -A --sort-by=.metadata.creationTimestamp
 ```
 
+### lists pods sorted by their node name 
+
+```
+$ k get po -o wide --sort-by=.spec.nodeName
+```
+
 ### Manual Scheduling
 
 The only thing a scheduler does, is that it sets the nodeName for a Pod declaration. How it finds the correct node to schedule on, that's a very much complicated matter and takes many variables into account.
