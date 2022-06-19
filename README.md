@@ -711,6 +711,16 @@ kubectl get po nginx1 -o jsonpath='{.metadata.annotations}{"\n"}'
 
 kubectl get po nginx1 -o custom-columns=Name:metadata.name,ANNOTATIONS:metadata.annotations.description
 ```
+
+### Remove the annotations for these three pods
+
+```
+$ k annotate po nginx{1..3} description-
+pod/nginx1 annotated
+pod/nginx2 annotated
+pod/nginx3 annotated
+```
+
 ### Get node a pod is running on
 
 ```
