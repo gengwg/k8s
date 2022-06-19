@@ -690,6 +690,16 @@ kubectl get po --label-columns=app
 
 Can also be used with deployment, service, etc. labels.
 
+### Add an annotation 'owner: marketing' to all pods having 'app=v2' label
+
+```
+$ k annotate po -l "app=v2" owner=marketing
+pod/nginx2 annotated
+
+$ k describe po nginx2 | grep Annotations:
+Annotations:  owner: marketing
+```
+
 ### Get node a pod is running on
 
 ```
