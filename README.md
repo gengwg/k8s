@@ -797,6 +797,12 @@ NAME        SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
 hellocron   */1 * * * *   True      0        68s             2m22s
 ```
 
+Create a cronjob:
+
+```
+kubectl create cronjob busybox --image=busybox --schedule="*/1 * * * *" -- /bin/sh -c 'date; echo Hello from the Kubernetes cluster'
+```
+
 #### View logs for cron job
 
 > A `Cron Job` creates Jobs on a time-based schedule
