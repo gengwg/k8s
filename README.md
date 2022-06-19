@@ -627,6 +627,22 @@ NAME                          READY   STATUS    RESTARTS   AGE     LABELS
 helloworld                    1/1     Running   0          5m57s   application_type=ui,author=karthequian,env=production,release-version=1.0
 ```
 
+### Create a pod with label
+
+```
+$ k run nginx1 --image=nginx -l=app=v1
+pod/nginx1 created
+$ k run nginx2 --image=nginx --labels=app=v1
+pod/nginx2 created
+$ k run nginx3 --image=nginx -l app=v1
+pod/nginx3 created
+$ k get po --show-labels
+NAME     READY   STATUS              RESTARTS   AGE   LABELS
+nginx1   1/1     Running             0          53s   app=v1
+nginx2   1/1     Running             0          24s   app=v1
+nginx3   0/1     ContainerCreating   0          2s    app=v1
+```
+
 ### Select with labels
 
 ```
@@ -641,6 +657,15 @@ $ k get pods --selector 'release-version in (1.0,2.0)'
 $ k get pods -l 'release-version notin (1.0,2.0)' --show-labels
 # delete pods using labels
 $ k delete pods -l dev-lead=karthik
+```
+
+Get the label 'app' for the pods (show a column with APP labels)
+
+
+```
+kubectl get po -L app
+# or
+kubectl get po --label-columns=app
 ```
 
 Can also be used with deployment, service, etc. labels.
