@@ -1444,6 +1444,19 @@ NAME    REFERENCE          TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
 nginx   Deployment/nginx   <unknown>/80%   7         10        0          15s
 ```
 
+### Create a job
+
+```
+$ kubectl create job busybox --image=busybox -- /bin/sh -c 'echo hello;sleep 30;echo world'
+job.batch/busybox created
+$ kubectl logs job/busybox
+hello
+# wait 30 seconds
+$ kubectl logs job/busybox
+hello
+world
+```
+
 ## Errors
 
 ### `/data` directory permission issues
