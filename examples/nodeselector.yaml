@@ -1,0 +1,12 @@
+# Create a pod that will be deployed to a Node that has the label 'accelerator=nvidia-tesla-p100'
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cuda-test
+spec:
+  containers:
+    - name: cuda-test
+      image: "k8s.gcr.io/cuda-vector-add:v0.1"
+  nodeSelector: # add this
+    accelerator: nvidia-tesla-p100 # the selection label
