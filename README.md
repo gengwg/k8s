@@ -1423,6 +1423,16 @@ nginx-575fc7645b   0         0         0       2m46s
 nginx-67dfd6c8f9   2         2         2       12m
 ```
 
+### Pause/resume rollout
+
+```
+$ kubectl rollout pause deploy nginx
+deployment.apps/nginx paused
+
+$ kubectl rollout resume deploy nginx
+deployment.apps/nginx resumed
+```
+
 ### Autoscale the deployment, targetting cpu utilization at 80 percent
 
 ```
