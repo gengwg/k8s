@@ -268,6 +268,15 @@ kubectl delete pods pod_name --grace-period=0 --force -n myns
 
 Be careful using this though. If you need force delete a pod, there is usually an issue with the cluster itself going on. So check cluster status before doing that.
 
+### Delete multiple pods
+
+```
+$ k delete po nginx{1..3}
+pod "nginx1" deleted
+pod "nginx2" deleted
+pod "nginx3" deleted
+```
+
 ### Debugging Pods
 
 ```
@@ -1325,6 +1334,104 @@ kubectl run busybox --image=busybox -it --restart=Never -- /bin/sh -c 'echo hell
 
 ```
 kubectl run busybox --image=busybox -it --rm --restart=Never -- /bin/sh -c 'echo hello world'
+```
+
+### Create a deployment with 2 replicas
+
+```
+kubectl create deploy nginx --image=nginx:1.18.0 --replicas=2 --port=80
+```
+
+### get number of replicas
+
+```
+kubectl describe deploy nginx # you'll see the name of the replica set on the Events section and in the 'NewReplicaSet' property
+# OR you can find rs directly by:
+kubectl get rs -l run=nginx # if you created deployment by 'run' command
+kubectl get rs -l app=nginx # if you created deployment by 'create' command
+```
+
+### Check how the deployment rollout is going
+
+```
+$ kubectl rollout status deploy nginx
+deployment "nginx" successfully rolled out
+
+$ k set image deploy nginx nginx=nginx:1.91
+deployment.apps/nginx image updated
+$ kubectl rollout status deploy nginx
+Waiting for deployment "nginx" rollout to finish: 1 out of 2 new replicas have been updated...
+```
+
+### Check the rollout history and confirm that the replicas are OK
+
+```
+$ kubectl rollout history deploy nginx
+deployment.apps/nginx 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+
+$ kubectl get deploy nginx
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+nginx   2/2     2            2           9m51s
+$ kubectl get rs
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-575fc7645b   2         2         1       23s
+nginx-67dfd6c8f9   1         1         1       9m55s
+$ kubectl get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-575fc7645b-wtmsh   1/1     Running   0          30s
+nginx-575fc7645b-zq9x5   1/1     Running   0          17s
+
+$ kubectl rollout history deploy nginx --revision=4
+deployment.apps/nginx with revision #4
+Pod Template:
+  Labels:	app=nginx
+	pod-template-hash=d645d84b6
+  Containers:
+   nginx:
+    Image:	nginx:1.91
+    Port:	80/TCP
+    Host Port:	0/TCP
+    Environment:	<none>
+    Mounts:	<none>
+  Volumes:	<none>
+```
+
+### Undo the latest rollout 
+
+```
+$ kubectl rollout undo deploy nginx
+deployment.apps/nginx rolled back
+$ k get rs
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-575fc7645b   1         1         1       2m24s
+nginx-67dfd6c8f9   2         2         1       11m
+$ k get po
+NAME                     READY   STATUS        RESTARTS   AGE
+nginx-575fc7645b-zq9x5   0/1     Terminating   0          2m14s
+nginx-67dfd6c8f9-69p8l   1/1     Running       0          4s
+nginx-67dfd6c8f9-jpcrr   1/1     Running       0          5s
+$ k get po
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-67dfd6c8f9-69p8l   1/1     Running   0          8s
+nginx-67dfd6c8f9-jpcrr   1/1     Running   0          9s
+gengwg@elaine:~/nc$ k get rs
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-575fc7645b   0         0         0       2m46s
+nginx-67dfd6c8f9   2         2         2       12m
+```
+
+### Autoscale the deployment, targetting cpu utilization at 80 percent
+
+```
+$ kubectl autoscale deploy nginx --min=7 --max=10 --cpu-percent=80
+horizontalpodautoscaler.autoscaling/nginx autoscaled
+
+$ k get hpa nginx
+NAME    REFERENCE          TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+nginx   Deployment/nginx   <unknown>/80%   7         10        0          15s
 ```
 
 ## Errors
