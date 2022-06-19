@@ -602,6 +602,7 @@ Annotations:        kubeadm.alpha.kubernetes.io/cri-socket: unix:///run/containe
                     node.alpha.kubernetes.io/ttl: 0
                     volumes.kubernetes.io/controller-managed-attach-detach: true
 ```
+
 ### Modify labels to a running pod
 
 ```
@@ -610,6 +611,25 @@ pod/helloworld labeled
 $ kubectl get pods --show-labels
 NAME                          READY   STATUS    RESTARTS   AGE    LABELS
 helloworld                    1/1     Running   0          4m3s   app=helloworldapp,application_type=ui,author=karthequian,env=production,release-version=1.0
+```
+
+### Add new labels to a running pod
+
+Add a new label tier=web to all pods having 'app=v2' or 'app=v1' label
+
+```
+$ k label po  tier=web -l app
+pod/nginx1 labeled
+pod/nginx2 labeled
+pod/nginx3 labeled
+
+$ k get po --show-labels
+NAME     READY   STATUS    RESTARTS   AGE     LABELS
+nginx1   1/1     Running   0          8m22s   app=v1,tier=web
+nginx2   1/1     Running   0          7m53s   app=v2,tier=web
+nginx3   1/1     Running   0          7m31s   app=v1,tier=web
+
+k label po  tier=web -l "app in (v1,v2)"
 ```
 
 Label a node:
