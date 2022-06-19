@@ -700,6 +700,17 @@ $ k describe po nginx2 | grep Annotations:
 Annotations:  owner: marketing
 ```
 
+### Check the annotations for pod nginx1 
+
+```
+kubectl annotate pod nginx1 --list
+
+kubectl describe po nginx1 | grep -i 'annotations'
+
+kubectl get po nginx1 -o jsonpath='{.metadata.annotations}{"\n"}'
+
+kubectl get po nginx1 -o custom-columns=Name:metadata.name,ANNOTATIONS:metadata.annotations.description
+```
 ### Get node a pod is running on
 
 ```
