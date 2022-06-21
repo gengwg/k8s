@@ -1463,6 +1463,14 @@ hello
 world
 ```
 
+### Check PVC usage
+
+by run `df -h` inside a container:
+
+```
+k exec -it prometheus-prom-prometheus-0 -- df -h /prometheus
+```
+
 ## Errors
 
 ### `/data` directory permission issues
