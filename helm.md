@@ -78,6 +78,12 @@ helm fetch prometheus-community/prometheus --untar
 helm install -f values.yaml rbac-manager . -n rbac-manager
 ```
 
+### Upgrade a local copy of chart
+
+```
+helm upgrade -f values.yaml rbac-manager . -n rbac-manager
+```
+
 ### Prepare a template to install on k8s
 
 ```
