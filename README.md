@@ -764,6 +764,9 @@ If the node where a Pod is running has enough of a resource available, it's poss
 
 Per-deployment settings override the global namespace settings.
 
+
+Requests are what the container is guaranteed to get. If a container requests a resource, Kubernetes will only schedule it on a node that can give it that resource. Limits, on the other hand, make sure a container never goes above a certain value.
+
 ### CRD
 
 CRD — Custom Resource Definition — defines a Custom Resource which is not available in the default Kubernetes implementation.
