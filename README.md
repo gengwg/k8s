@@ -1474,6 +1474,12 @@ by run `df -h` inside a container:
 k exec -it prometheus-prom-prometheus-0 -- df -h /prometheus
 ```
 
+### Randomly choose a Ready node
+
+```
+kubectl get nodes --no-headers | grep -v NotReady | awk '{print $1}' | shuf -n1
+```
+
 ## Errors
 
 ### `/data` directory permission issues
