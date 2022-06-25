@@ -1480,6 +1480,12 @@ k exec -it prometheus-prom-prometheus-0 -- df -h /prometheus
 kubectl get nodes --no-headers | grep -v NotReady | awk '{print $1}' | shuf -n1
 ```
 
+### view the events for a Pod
+
+```
+kubectl describe pod frontend | grep -A 9999999999 Events
+```
+
 ## Errors
 
 ### `/data` directory permission issues
