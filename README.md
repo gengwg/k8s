@@ -780,6 +780,19 @@ If a container exceeds its memory request and the node that it runs on becomes s
 
 A container might or might not be allowed to exceed its CPU limit for extended periods of time. However, container runtimes don't terminate Pods or containers for excessive CPU usage.
 
+
+However, if the filesystem space for writeable container layers, node-level logs, or emptyDir volumes falls low, the node taints itself as short on local storage and this taint triggers eviction for any Pods that don't specifically tolerate the taint.
+
+Note: Extended resources cannot be overcommitted, so request and limit must be equal if both are present in a container spec.
+
+To consume an extended resource in a Pod, include the resource name as a key in the spec.containers[].resources.limits map in the container spec.
+
+A Pod is scheduled only if all of the resource requests are satisfied, including CPU, memory and any extended resources. The Pod remains in the PENDING state as long as the resource request cannot be satisfied.
+
+The amount of resources available to Pods is less than the node capacity because system daemons use a portion of the available resources. Within the Kubernetes API, each Node has a .status.allocatable field. The .status.allocatable field describes the amount of resources that are available to Pods on that node (for example: 15 virtual CPUs and 7538 MiB of memory). 
+
+You should also consider what access you grant to that namespace: full write access to a namespace allows someone with that access to remove any resource, including a configured ResourceQuota.
+
 Per-deployment settings override the global namespace settings.
 
 
