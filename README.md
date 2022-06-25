@@ -1486,7 +1486,7 @@ kubectl get nodes --no-headers | grep -v NotReady | awk '{print $1}' | shuf -n1
 kubectl describe pod frontend | grep -A 9999999999 Events
 ```
 
-## Errors
+## Troubleshooting
 
 ### `/data` directory permission issues
 
@@ -1682,6 +1682,15 @@ It was because I accidentally specified http instead of https. you need to speci
 ```
     server: k8s.example.com:6443
 ```
+
+### My Pods are pending with event message FailedScheduling 
+
+In general, if a Pod is pending with a message of this type, there are several things to try:
+
+    Add more nodes to the cluster.
+    Terminate unneeded Pods to make room for pending Pods.
+    Check that the Pod is not larger than all the nodes. For example, if all the nodes have a capacity of cpu: 1, then a Pod with a request of cpu: 1.1 will never be scheduled.
+    Check for node taints. If most of your nodes are tainted, and the new Pod does not tolerate that taint, the scheduler only considers placements onto the remaining nodes that don't have that taint.
 
 ## Resources
 
