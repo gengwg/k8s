@@ -1,0 +1,43 @@
+# In the configuration file, you can see that the Pod has a Volume that the init container and the application container share.
+# The init container mounts the shared Volume at /work-dir, and the application container mounts the shared Volume at /usr/share/nginx/html. The init container runs the following command and then terminates:
+# wget -O /work-dir/index.html http://info.cern.ch
+# Notice that the init container writes the index.html file in the root directory of the nginx server.
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: workdir
+      mountPath: /usr/share/nginx/html
+  # These containers are run during pod initialization
+  initContainers:
+  - name: install
+    image: busybox:1.28
+    command:
+    - wget
+    - "-O"
+    - "/work-dir/index.html"
+    - http://info.cern.ch
+    volumeMounts:
+    - name: workdir
+      mountPath: "/work-dir"
+  dnsPolicy: Default
+  volumes:
+  - name: workdir
+    emptyDir: {}
+
+# $ kubectl exec -it init-demo -- /bin/bash
+# root@init-demo:/# curl localhost
+# <html><head></head><body><header>
+# <title>http://info.cern.ch</title>
+# </header>
+# 
+# <h1>http://info.cern.ch - home of the first website</h1>
+# <p>from here you can:</p>
