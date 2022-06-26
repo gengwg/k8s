@@ -785,6 +785,12 @@ However, if the filesystem space for writeable container layers, node-level logs
 
 Note: Extended resources cannot be overcommitted, so request and limit must be equal if both are present in a container spec.
 
+As overcommit is not allowed for extended resources, it makes no sense to specify both requests and limits for the same extended resource in a quota. So for extended resources, only quota items with prefix requests. is allowed for now.
+
+Take the GPU resource as an example, if the resource name is nvidia.com/gpu, and you want to limit the total number of GPUs requested in a namespace to 4, you can define a quota as follows:
+
+    requests.nvidia.com/gpu: 4
+
 To consume an extended resource in a Pod, include the resource name as a key in the spec.containers[].resources.limits map in the container spec.
 
 A Pod is scheduled only if all of the resource requests are satisfied, including CPU, memory and any extended resources. The Pod remains in the PENDING state as long as the resource request cannot be satisfied.
@@ -795,8 +801,13 @@ You should also consider what access you grant to that namespace: full write acc
 
 Per-deployment settings override the global namespace settings.
 
-
 Requests are what the container is guaranteed to get. If a container requests a resource, Kubernetes will only schedule it on a node that can give it that resource. Limits, on the other hand, make sure a container never goes above a certain value.
+
+In the case where the total capacity of the cluster is less than the sum of the quotas of the namespaces, there may be contention for resources. This is handled on a first-come-first-served basis.
+
+Neither contention nor changes to quota will affect already created resources.
+
+When a scope is added to the quota, it limits the number of resources it supports to those that pertain to the scope. Resources specified on the quota outside of the allowed set results in a validation error.
 
 ### CRD
 
