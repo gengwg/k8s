@@ -1200,6 +1200,15 @@ $ k api-resources |  grep pods
 pods                              po           v1                                     true         Pod
 ```
 
+### Find out which api resources belong to an specific api group
+
+```
+$ kubectl api-resources --api-group=batch
+NAME       SHORTNAMES   APIGROUP   NAMESPACED   KIND
+cronjobs   cj           batch      true         CronJob
+jobs                    batch      true         Job
+```
+
 ### Create a role only create Secrets and ConfigMaps in that Namespace
 
 ```
