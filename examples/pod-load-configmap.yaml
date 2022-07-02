@@ -1,0 +1,57 @@
+# create config maps:
+# kubectl create cm options --from-literal=var5=val5
+# kubectl create configmap anotherone --from-literal=var6=val6 --from-literal=var7=val7
+# kubectl create configmap cmvolume --from-literal=var8=val8 --from-literal=var9=val9
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  # add a volumes list with configmap
+  volumes:
+  - name: myvolume
+    configMap:
+      name: cmvolume
+  containers:
+  - image: nginx
+    name: nginx
+    resources: {}
+    # Load configMap as a volume inside an nginx pod on path '/etc/lala'.
+    volumeMounts:
+    - name: myvolume
+      mountPath: /etc/lala
+    # Load configMap as env variables
+    envFrom:
+    - configMapRef:
+        name: anotherone
+    # loads the value from variable 'var5' in an env variable called 'option'
+    env:
+    - name: option
+      valueFrom:
+        configMapKeyRef:
+          name: options
+          key: var5
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+# $ kubectl exec -it nginx -- env | grep option # will show 'option=val5'
+#
+# $ kubectl exec -it nginx -- env | grep var
+# var7=val7
+# var6=val6
+#
+# $ kubectl exec -it nginx -- /bin/sh
+# ls /etc/lala
+# var8  var9
+# cd /etc/lala
+# cat var8
+# val8#
+# cat var9
+# val9#
+#
+
