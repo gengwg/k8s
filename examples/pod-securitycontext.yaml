@@ -1,3 +1,5 @@
+# Create the YAML for an nginx pod that runs with the user ID 101.
+# Create the YAML for an nginx pod that has the capabilities "NET_ADMIN", "SYS_TIME" added to its single container
 apiVersion: v1
 kind: Pod
 metadata:
