@@ -328,6 +328,12 @@ kube-root-ca.crt   1      24h
 logger             1      3m15s
 ```
 
+Create a configmap with multiple values:
+
+```
+k create configmap config --from-literal=foo=lala --from-literal=foo2=lolo
+```
+
 ### Deploy Prometheus Server and Grafana
 
 #### Prometheus
