@@ -408,6 +408,21 @@ pass:  4 bytes
 user:  5 bytes
 ```
 
+Create a secret called mysecret2 that gets key/value from a file
+
+```
+echo -n admin > username
+# $ cat username
+# admin
+kubectl create secret generic mysecret2 --from-file=username
+
+kubectl get secret mysecret2 -o yaml
+echo -n YWRtaW4= | base64 -d # on MAC it is -D, which decodes the value and shows 'admin'
+
+kubectl get secret mysecret2 -o jsonpath='{.data.username}' | base64 -d  # on MAC it is -D
+kubectl get secret mysecret2 --template '{{.data.username}}' | base64 -d  # on MAC it is -D
+```
+
 ### Copy kubernetes secret from one namespace to another
 
 ```
