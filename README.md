@@ -1118,6 +1118,14 @@ k expose pod my-static-pod-cluster3-master1 \
   --port 80
 ```
 
+### Run a pod and expose service at the same time
+
+```
+$ kubectl run nginx --image=nginx --restart=Never --port=80 --expose
+service/nginx created
+pod/nginx created
+```
+
 ### lists all Pods sorted by their AGE 
 
 ```
