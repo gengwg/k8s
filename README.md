@@ -1141,6 +1141,12 @@ k expose pod my-static-pod-cluster3-master1 \
   --port 80
 ```
 
+Expose a deployment
+
+```
+kubectl expose deploy foo --port=6262 --target-port=8080
+```
+
 ### Run a pod and expose service at the same time
 
 ```
@@ -1448,7 +1454,7 @@ kubectl run busybox --image=busybox -it --restart=Never -- /bin/sh -c 'echo hell
 kubectl run busybox --image=busybox -it --rm --restart=Never -- /bin/sh -c 'echo hello world'
 ```
 
-### Create a deployment with 2 replicas
+### Create a deployment that will accept traffic on port 80 with 2 replicas 
 
 ```
 kubectl create deploy nginx --image=nginx:1.18.0 --replicas=2 --port=80
