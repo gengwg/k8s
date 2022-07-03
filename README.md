@@ -1068,6 +1068,29 @@ kubectl run nginx --image=nginx --restart=Never --env=var1=val1
 kubectl run nginx --restart=Never --image=nginx --env=var1=val1 -it --rm -- env
 ```
 
+### Convert the ClusterIP to NodePort for service
+
+```
+kubectl edit svc nginx
+```
+
+Or
+
+```
+$ k get svc nginx
+NAME    TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+nginx   ClusterIP   10.96.52.99   <none>        80/TCP    5m43s
+$ kubectl patch svc nginx -p '{"spec":{"type":"NodePort"}}'
+service/nginx patched
+$ k get svc nginx
+NAME    TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+nginx   NodePort   10.96.52.99   <none>        80:32420/TCP   5m50s
+
+$ k get no -o wide # get IP for node
+$ curl 172.18.0.4:32420
+$ wget -O- 172.18.0.4:32420
+```
+
 ### edit a running pod config
 
 ```
