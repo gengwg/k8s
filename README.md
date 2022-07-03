@@ -1801,6 +1801,19 @@ In general, if a Pod is pending with a message of this type, there are several t
     Check that the Pod is not larger than all the nodes. For example, if all the nodes have a capacity of cpu: 1, then a Pod with a request of cpu: 1.1 will never be scheduled.
     Check for node taints. If most of your nodes are tainted, and the new Pod does not tolerate that taint, the scheduler only considers placements onto the remaining nodes that don't have that taint.
 
+###  can't see the file from the second pod sharing hostpath pvc
+
+If the file doesn't show on the second pod but it shows on the first, it has most likely been scheduled on a different node.
+
+```
+$ k get po -o wide
+NAME       READY   STATUS    RESTARTS   AGE     IP            NODE                      NOMINATED NODE   READINESS GATES
+busybox    1/1     Running   0          2m25s   10.244.1.65   kind-multi-node-worker2   <none>           <none>
+busybox2   1/1     Running   0          70s     10.244.2.93   kind-multi-node-worker    <none>           <none>
+```
+
+If they are on different nodes, you won't see the file, because we used the hostPath volume type. If you need to access the same files in a multi-node cluster, you need a volume type that is independent of a specific node. There are lots of different types per cloud provider (see here), a general solution could be to use NFS.
+
 ## Resources
 
 - https://github.com/kelseyhightower/kubernetes-the-hard-way
