@@ -429,6 +429,20 @@ kubectl get secret mysecret2 --template '{{.data.username}}' | base64 -d  # on M
 kubectl get secret mysecret --namespace=namespace1 -o yaml | sed 's/namespace: namespace1/namespace: namespace2/g' | kubectl create -f -  
 ```
 
+### Taint a with key of spray, value of mortein and effect of NoSchedule
+
+```
+$ k taint node kind-multi-node-worker2 spray=mortein:NoSchedule
+node/kind-multi-node-worker2 tainted
+```
+
+### Remove taint from node
+
+```
+$ k taint node kind-multi-node-worker2 spray=mortein:NoSchedule-
+node/kind-multi-node-worker2 untainted
+```
+
 ### List the taints on Kubernetes nodes
 
 ```
