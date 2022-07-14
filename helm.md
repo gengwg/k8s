@@ -91,6 +91,12 @@ helm template myprom prometheus-community/prometheus > k8s-myprom.yaml
 kubectl apply -f k8s-myprom.yaml
 ```
 
+### Template multiple value files and kubectl apply all
+
+```
+ls mydir/ | xargs -I  {} helm template . --set cluster=$(kubectl config current-context) -f  {}  | k apply -f -
+```
+
 ### Install/uninstall chart into a specific namespace
 
 ```sh
