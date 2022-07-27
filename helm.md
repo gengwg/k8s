@@ -108,3 +108,9 @@ hello-prom	monitoring	1       	2021-11-23 10:03:43.545979 -0800 PST	deployed	kub
 gengwg@gengwg-mbp:~$ helm uninstall hello-prom -n monitoring
 ```
 
+### Install local chart, create namespace if not exist
+
+```
+helm upgrade -i --create-namespace kubecost -f values.yaml . --namespace kubecost --set kubecostToken="xxxxxxxx"
+```
+
