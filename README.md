@@ -844,6 +844,8 @@ Neither contention nor changes to quota will affect already created resources.
 
 When a scope is added to the quota, it limits the number of resources it supports to those that pertain to the scope. Resources specified on the quota outside of the allowed set results in a validation error.
 
+By default, containers run with unbounded compute resources on a k8s cluster. cluster admins can restrict resource consumption and creation on a namespace basis. within a namespace, a pod or container can consume as much cpu and memory as defined by the namespace's resource quota. LimitRange is a policy to constrain resource allocation to pods or containers in a namespace.
+
 ### CRD
 
 CRD — Custom Resource Definition — defines a Custom Resource which is not available in the default Kubernetes implementation.
