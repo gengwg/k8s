@@ -447,6 +447,9 @@ node/kind-multi-node-worker2 untainted
 
 ```
 kubectl get nodes -o json | jq '.items[].spec.taints'
+
+# with name
+$ kubectl get nodes -o json | jq ".items[]|{name:.metadata.name, taints:.spec.taints}"
 ```
 
 ### List all Container images in all namespaces
