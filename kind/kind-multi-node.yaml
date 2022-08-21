@@ -1,7 +1,11 @@
-# create
+## create cluster
+#
 # kind create cluster --config kind-multi-node.yaml --name kind-multi-node
 #
-# delete
+# with specific version
+# kind create cluster --config kind-multi-node.yaml --name kind-multi-node  --image kindest/node:v1.22.9
+## delete delete cluster
+#
 # $ kind delete cluster --name kind-multi-node
 
 kind: Cluster
