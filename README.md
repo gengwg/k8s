@@ -443,6 +443,12 @@ $ k taint node kind-multi-node-worker2 spray=mortein:NoSchedule-
 node/kind-multi-node-worker2 untainted
 ```
 
+### get events only for a pod
+
+```
+kubectl get event --namespace abc-namespace --field-selector involvedObject.name=my-pod
+```
+
 ### List the taints on Kubernetes nodes
 
 ```
