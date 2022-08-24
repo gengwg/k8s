@@ -467,6 +467,12 @@ sort |\
 uniq -c
 ```
 
+### "dry run" validation of yaml files
+
+```
+kubectl apply --validate=true --dry-run=client --filename=file.yaml
+```
+
 ### Getting a shell to a pod/container
 
 Get interactive shell to a Pod (if the Pod has multiple containers, you will login to a default one, i.e. the first container specified in the Pod’s config.):
