@@ -98,6 +98,7 @@ brew install minikube
 brew install kubebuilder
 brew install tilt
 
+brew install kubeval
 # krew
 brew install krew
 kubectl krew update
