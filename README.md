@@ -1627,6 +1627,13 @@ kubectl get nodes --no-headers | grep -v NotReady | awk '{print $1}' | shuf -n1
 kubectl describe pod frontend | grep -A 9999999999 Events
 ```
 
+
+### List all resources and subresources on the cluster
+
+```
+_list=($(kubectl get --raw / |grep "^    \"/api"|sed 's/[",]//g')); for _api in ${_list[@]}; do _aruyo=$(kubectl get --raw ${_api} | jq .resources); if [ "x${_aruyo}" != "xnull" ]; then echo; echo "===${_api}==="; kubectl get --raw ${_api} | jq -r ".resources[].name"; fi; done
+```
+
 ## Troubleshooting
 
 ### `/data` directory permission issues
