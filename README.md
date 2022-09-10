@@ -1607,6 +1607,16 @@ hello
 world
 ```
 
+### Suspend cronjobs
+
+```
+$ kubectl patch cronjobs hello -p '{"spec" : {"suspend" : true }}'
+cronjob.batch/hello patched
+$ k get cj hello
+NAME    SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+hello   */2 * * * *   True      0        49s             451d
+```
+
 ### Check PVC usage
 
 by run `df -h` inside a container:
