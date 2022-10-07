@@ -799,6 +799,12 @@ for example
 k -v8 port-forward svc/myservice 3000:80
 ```
 
+### Calculate total GBs PVCs requested
+
+```
+$ k get pvc -A | awk '{ print $5 }' | grep Gi | sed 's/..$//' | paste -sd+ | bc
+```
+
 ## Notes
 
 every command needs a namespace and context to work. Defaults are used if not provided.
