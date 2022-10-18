@@ -824,6 +824,12 @@ get_gpu_usage () {
 }
 ```
 
+### Get nodes not ready or cordoned
+
+```
+$ k get no | grep -E  'NotReady|SchedulingDisabled'
+```
+
 ## Notes
 
 every command needs a namespace and context to work. Defaults are used if not provided.
