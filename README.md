@@ -833,6 +833,12 @@ get_gpu_usage () {
 $ k get no | grep -E  'NotReady|SchedulingDisabled'
 ```
 
+### Get Only Names Of All Namespaces
+
+```
+kubectl get ns  --no-headers -o custom-columns=":metadata.name"
+```
+
 ## Notes
 
 every command needs a namespace and context to work. Defaults are used if not provided.
