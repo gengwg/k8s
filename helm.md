@@ -114,3 +114,8 @@ gengwg@gengwg-mbp:~$ helm uninstall hello-prom -n monitoring
 helm upgrade -i --create-namespace kubecost -f values.yaml . --namespace kubecost --set kubecostToken="xxxxxxxx"
 ```
 
+### Passing array values through --set
+
+```
+helm template -f values.yaml  . --set cluster=$cluster --set namespace=$ns --set groups={"group1", "group2"}
+```
