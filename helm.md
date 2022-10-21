@@ -119,3 +119,48 @@ helm upgrade -i --create-namespace kubecost -f values.yaml . --namespace kubecos
 ```
 helm template -f values.yaml  . --set cluster=$cluster --set namespace=$ns --set groups={"group1", "group2"}
 ```
+
+### Roll back a release
+
+Sometimes you see errors like this:
+
+```
+~/k8s/kube-prometheus-stack$ helm upgrade --install myprom -f values-xyz.yaml .
+Error: UPGRADE FAILED: another operation (install/upgrade/rollback) is in progress
+```
+
+Check the history:
+
+```
+~/k8s/kube-prometheus-stack$ helm history myprom
+REVISION	UPDATED                 	STATUS         	CHART                       	APP VERSION	DESCRIPTION
+5       	Fri Jul 29 18:57:04 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+6       	Fri Jul 29 19:03:17 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+7       	Tue Aug  2 17:15:01 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+8       	Tue Aug  2 17:22:47 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+9       	Tue Aug  2 17:24:12 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+10      	Thu Aug  4 19:44:03 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+11      	Thu Aug  4 19:59:15 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+12      	Thu Aug  4 20:21:53 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+13      	Tue Aug  9 15:11:37 2022	deployed       	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+14      	Thu Oct 20 14:59:12 2022	pending-upgrade	kube-prometheus-stack-19.0.3	0.50.0     	Preparing upgrade
+```
+
+Roll back to a working revision:
+
+```
+~/k8s/kube-prometheus-stack$ helm rollback myprom 13
+
+~/k8s/kube-prometheus-stack$ helm history myprom
+REVISION	UPDATED                 	STATUS         	CHART                       	APP VERSION	DESCRIPTION
+6       	Fri Jul 29 19:03:17 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+7       	Tue Aug  2 17:15:01 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+8       	Tue Aug  2 17:22:47 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+9       	Tue Aug  2 17:24:12 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+10      	Thu Aug  4 19:44:03 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+11      	Thu Aug  4 19:59:15 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+12      	Thu Aug  4 20:21:53 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+13      	Tue Aug  9 15:11:37 2022	superseded     	kube-prometheus-stack-19.0.3	0.50.0     	Upgrade complete
+14      	Thu Oct 20 14:59:12 2022	pending-upgrade	kube-prometheus-stack-19.0.3	0.50.0     	Preparing upgrade
+15      	Fri Oct 21 01:24:55 2022	deployed       	kube-prometheus-stack-19.0.3	0.50.0     	Rollback to 13
+```
