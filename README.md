@@ -819,6 +819,26 @@ $ kubectl config view --minify -o jsonpath='{..namespace}'
 or use `kubens` if installed.
 
 
+### Get available vs used gpus on each node
+
+```
+get_gpu_usage () {
+    kubectl describe nodes  |  tr -d '\000' | sed -n -e '/^Name/,/Roles/p' -e '/^Capacity/,/Allocatable/p' -e '/^Allocated resources/,/Events/p'  | grep -e Name  -e  nvidia.com  | perl -pe 's/\n//'  |  perl -pe 's/Name:/\n/g' | sed 's/nvidia.com\/gpu:\?//g'  | sed '1s/^/Node Available(GPUs)  Used(GPUs)/' | sed 's/$/ 0 0 0/'  | awk '{print $1,  $2, $3}'  | column -t
+}
+```
+
+### Get nodes not ready or cordoned
+
+```
+$ k get no | grep -E  'NotReady|SchedulingDisabled'
+```
+
+### Get Only Names Of All Namespaces
+
+```
+kubectl get ns  --no-headers -o custom-columns=":metadata.name"
+```
+
 ## Notes
 
 every command needs a namespace and context to work. Defaults are used if not provided.
