@@ -164,3 +164,10 @@ REVISION	UPDATED                 	STATUS         	CHART                       	A
 14      	Thu Oct 20 14:59:12 2022	pending-upgrade	kube-prometheus-stack-19.0.3	0.50.0     	Preparing upgrade
 15      	Fri Oct 21 01:24:55 2022	deployed       	kube-prometheus-stack-19.0.3	0.50.0     	Rollback to 13
 ```
+
+### Increase timeout for install
+
+```
+helm upgrade --install myprom -f values-xyz.yaml . --timeout 10m
+```
+
