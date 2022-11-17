@@ -82,58 +82,6 @@ minikube addons enable dashboard
 
 ## Commands
 
-### Mac Install a few k8s Tools
-
-```
-brew install kubectl
-brew install kubectx
-brew install octant
-brew install kustomize
-brew install helm
-
-brew install kind
-brew install minikube
-
-# k8s operator tools
-brew install kubebuilder
-brew install tilt
-
-brew install k9s
-
-brew install kubeval
-
-# krew
-brew install krew
-kubectl krew update
-kubectl krew install access-matrix
-```
-
-Usage:
-
-```
-$ kubens
-default <-- highlighted
-flux-system
-kube-node-lease
-kube-public
-kube-system
-local-path-storage
-monitoring
-$ kubens monitoring
-Context "kind-kind" modified.
-Active namespace is "monitoring".
-$ kubens
-default
-flux-system
-kube-node-lease
-kube-public
-kube-system
-local-path-storage
-monitoring <-- highlighted
-$ k get pods
-<now will show pods in monitoring namespace>
-```
-
 ### kubectl switch k8s context
 
 A kubernetes context is just a set of access parameters that contains a Kubernetes cluster, a user, and a namespace. kubernetes Context is essentially the configuration that you use to access a particular cluster & namespace with a user account.
