@@ -1207,11 +1207,19 @@ echo 'complete -F __start_kubectl k' >>~/.bashrc
 ```
 
 
-### list all pods and its nodes
+### list pods running on each node
+
+For all ns:
 
 ```
 kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName --all-namespaces
 kubectl get pod -o=custom-columns=NODE:.spec.nodeName,POD:.metadata.name --all-namespaces
+```
+
+For one ns:
+
+```
+kubectl get pod -o=custom-columns=NAME:.metadata.name,STATUS:.status.phase,NODE:.spec.nodeName -n myns
 ```
 
 ### Get cluster cluster role binding for a group
