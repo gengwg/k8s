@@ -171,3 +171,9 @@ REVISION	UPDATED                 	STATUS         	CHART                       	A
 helm upgrade --install myprom -f values-xyz.yaml . --timeout 10m
 ```
 
+### Add debug output for install
+
+```
+helm upgrade --install myprom -f values-xyz.yaml . --timeout 10m --debug
+```
+
