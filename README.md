@@ -395,12 +395,6 @@ $ k taint node kind-multi-node-worker2 spray=mortein:NoSchedule-
 node/kind-multi-node-worker2 untainted
 ```
 
-### get events only for a pod
-
-```
-kubectl get event --namespace abc-namespace --field-selector involvedObject.name=my-pod
-```
-
 ### List the taints on Kubernetes nodes
 
 ```
@@ -1313,6 +1307,20 @@ k -n project-hamster create rolebinding processor \
 
 ```
 kubectl get events -A --sort-by=.metadata.creationTimestamp
+```
+
+### Check the recent events in a namespace
+
+Very useful for debgging.
+
+```
+kubectl -n myns get events --sort-by='{.lastTimestamp}'
+```
+
+### Check events only for a pod
+
+```
+kubectl get event -n myns --field-selector involvedObject.name=my-pod
 ```
 
 ### Write the names of all namespaced Kubernetes resources (like Pod, Secret, ConfigMap...)
