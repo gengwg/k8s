@@ -177,3 +177,30 @@ helm upgrade --install myprom -f values-xyz.yaml . --timeout 10m
 helm upgrade --install myprom -f values-xyz.yaml . --timeout 10m --debug
 ```
 
+## Troubleshooting
+
+### timed out waiting for the condition
+
+```
+Error: failed pre-install: timed out waiting for the condition
+helm.go:88: [debug] failed pre-install: timed out waiting for the condition
+```
+
+Check the recent events in the namespace:
+
+```
+kubectl get events --sort-by='{.lastTimestamp}' -n monitoring
+```
+
+You usually will find the reason it's failing to install, then deal with each issue case by case.
+
+Some examples:
+
+```
+12s         Warning   FailedCreate        job/myprom-admission-create   Error creating: pods "myprom-admission-create--1-5m9q2" is forbidden: maximum cpu usage per Container is 4, but limit is 5
+```
+
+```
+3s          Warning   FailedCreate        job/myprom-admission-create                       Error creating: pods "myprom-admission-create--1-" is forbidden: no PriorityClass with name high was found
+```
+
