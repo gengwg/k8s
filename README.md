@@ -375,6 +375,37 @@ kubectl get secret mysecret2 -o jsonpath='{.data.username}' | base64 -d  # on MA
 kubectl get secret mysecret2 --template '{{.data.username}}' | base64 -d  # on MAC it is -D
 ```
 
+Create a secret from with key from a file:
+
+```
+k create secret generic ldap-config --from-file=ldap-toml=./ldap.toml
+```
+
+This will create a secret called `ldap-config`, with key `ldap-toml` equal to the whole file content being base64ed.
+
+```
+$ k get secrets ldap-config -o yaml
+apiVersion: v1
+data:
+  ldap-toml: dmVyYm9zZ...... # <---- same as `$ base64 -w 0 ldap.toml`
+....
+```
+
+This is useful for passing ldap configs to grafana, for example.
+
+```
+grafana:
+....
+  ldap:
+    enabled: true
+    # `existingSecret` is a reference to an existing secret containing the ldap configuration
+    # for Grafana in a key `ldap-toml`.
+    existingSecret: "ldap-config" # <-----
+    # `config` is the content of `ldap.toml` that will be stored in the created secret
+    # config: ""
+....
+```
+
 ### Copy kubernetes secret from one namespace to another
 
 ```
