@@ -1898,7 +1898,21 @@ busybox2   1/1     Running   0          70s     10.244.2.93   kind-multi-node-wo
 
 If they are on different nodes, you won't see the file, because we used the hostPath volume type. If you need to access the same files in a multi-node cluster, you need a volume type that is independent of a specific node. There are lots of different types per cloud provider (see here), a general solution could be to use NFS.
 
+### Drain node hangs
+
+```
+$ kubectl drain --force --ignore-daemonsets --delete-local-data --grace-period=10 "$node";
+node "gke-staging-default-pool-28djdc82q-jrpp" cordoned
+pod "pod1" evicted
+pod "pod2" evicted
+pod "kube-dns-2928dhhh3w7-7qljt" evicted
+<nothing happens here>
+```
+
+It is possible that the pod(s) does not exist anymore and it stucks in 'terminating' state. You can find that pod using command `kubectl get pods -o wide --all-namespaces | grep <node_name>`. If so force delete that pod, then drain will continue.
+
 ## Resources
 
 - https://github.com/kelseyhightower/kubernetes-the-hard-way
+
 
