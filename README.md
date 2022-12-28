@@ -1679,6 +1679,31 @@ kubectl describe pod frontend | grep -A 9999999999 Events
 _list=($(kubectl get --raw / |grep "^    \"/api"|sed 's/[",]//g')); for _api in ${_list[@]}; do _aruyo=$(kubectl get --raw ${_api} | jq .resources); if [ "x${_aruyo}" != "xnull" ]; then echo; echo "===${_api}==="; kubectl get --raw ${_api} | jq -r ".resources[].name"; fi; done
 ```
 
+### Traceroute to pods on same and different nodes
+
+Same node: no need go through router.
+
+```
+$ k exec -it test-nginx -- /bin/sh
+
+/ # traceroute6 2620:10d:c0aa:11c::1552 # IP of another pod on same node
+traceroute to 2620:10d:c0aa:11c::1552 (2620:10d:c0aa:11c::1552), 30 hops max, 72 byte packets
+ 1  (2620:10d:c0aa:d::135)  0.008 ms  0.007 ms  0.002 ms # local node IP. it knows where to route local pod IPs
+ 2  (2620:10d:c0aa:11c::1552)  0.001 ms  0.003 ms  0.001 ms
+```
+
+Different node: uses kubelet node IP as hops for both local node and remote node. Need go through router BGP.
+
+```
+/ # traceroute6 2620:10d:c0aa:139::d5 # IP of another pod on same node
+traceroute to 2620:10d:c0aa:139::d5 (2620:10d:c0aa:139::d5), 30 hops max, 72 byte packets
+ 1  (2620:10d:c0aa:d::135)  0.007 ms  0.003 ms  0.002 ms # again local node IP
+ 2  2620:10d:c0aa:d::1 (2620:10d:c0aa:d::1)  0.826 ms  0.503 ms  0.483 ms # BGP Router IP
+ 3  2620:10d:c0aa:d::1 (2620:10d:c0aa:d::1)  1.126 ms  0.785 ms  0.880 ms
+ 4  (2620:10d:c0aa:d::164)  0.195 ms  0.169 ms  0.092 ms # remote node IP
+ 5  2620:10d:c0aa:139::d5 (2620:10d:c0aa:139::d5)  0.196 ms  0.187 ms  0.132 ms
+```
+
 ## Troubleshooting
 
 ### `/data` directory permission issues
