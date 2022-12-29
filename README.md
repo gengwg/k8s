@@ -1225,12 +1225,29 @@ It looks like our Pod is running on the master now as requested, although no tol
 
 ### bash auto-completion
 
+Updated version:
+
+https://kubernetes.io/docs/tasks/tools/included/optional-kubectl-configs-bash-mac/
+
+
 ```
 echo 'source <(kubectl completion bash)' >>~/.bashrc
 echo 'alias k=kubectl' >>~/.bashrc
-echo 'complete -F __start_kubectl k' >>~/.bashrc
+echo 'complete -o default -F __start_kubectl k' >>~/.bashrc
 ```
 
+Sometimes you see kubectl bash completion work on macOS/OS X:
+
+```
+-bash: completion: function `__start_kubectl' not found
+```
+
+Try below commands:
+
+```
+$ brew install bash-completion
+$ kubectl completion bash > $(brew --prefix)/etc/bash_completion.d/kubectl
+```
 
 ### list pods running on each node
 
