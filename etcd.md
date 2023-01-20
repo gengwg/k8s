@@ -62,6 +62,26 @@ member list
 5320353a7d98bdee, started, kind-control-plane, https://172.18.0.4:2380, https://172.18.0.2:2379, false
 ```
 
+### To change the leader in the etcd cluster
+
+First get the id of the node you want to be the leader, using:
+
+```
+etcdctl -w table endpoint status
+```
+
+or 
+
+```
+etcdctl -w table member list
+```
+
+To change the leader in the etcd cluster:
+
+```
+etcdctl move-leader <id-of-the-node-you-want-to-be-the-leader>
+```
+
 ### List all keys stored by K8s
 
 ```
