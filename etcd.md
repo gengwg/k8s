@@ -64,6 +64,14 @@ Use `--cluster`, otherwise only shows status for members listed in `--endpoints=
 etcdctl endpoint status --cluster
 ```
 
+### Check endpoint health status for all the cluster members
+
+Same as above.
+
+```
+etcdrun endpoint health  --cluster
+```
+
 ### Check current leader for the cluster
 
 HTTP API:
