@@ -39,6 +39,14 @@ total 32
 -rw------- 1 root root 1675 Sep 22  2020 server.key
 ```
 
+### Check endpoint status for all the cluster members
+
+Use `--cluster`, otherwise only shows status for members listed in `--endpoints=xxx`.
+
+```
+etcdctl endpoint status --cluster
+```
+
 ### List members of the etcd cluster
 
 ```
