@@ -64,6 +64,26 @@ Use `--cluster`, otherwise only shows status for members listed in `--endpoints=
 etcdctl endpoint status --cluster
 ```
 
+### Check current leader for the cluster
+
+HTTP API:
+
+```
+# run this for all etcd nodes until see `etcd_server_is_leader` is 1:
+
+$ curl -sL https://<etcd node fqdn>:2379/metrics | grep etcd_server_is_leader
+# HELP etcd_server_is_leader Whether or not this member is a leader. 1 if is, 0 otherwise.
+# TYPE etcd_server_is_leader gauge
+etcd_server_is_leader 1
+```
+
+CLI:
+
+```
+$ etcdrun endpoint status --cluster | grep true | cut -f1 -d,
+https://<leader node>:2379
+```
+
 ### List members of the etcd cluster
 
 ```
