@@ -39,6 +39,23 @@ total 32
 -rw------- 1 root root 1675 Sep 22  2020 server.key
 ```
 
+### Check etcd version
+
+HTTP API:
+
+```
+# curl -sL https://<etcd node fqdn>:2379/version
+{"etcdserver":"3.3.11","etcdcluster":"3.3.0"
+```
+
+CLI:
+
+```
+# etcdrun version
+etcdctl version: 3.3.11
+API version: 3.3
+```
+
 ### Check endpoint status for all the cluster members
 
 Use `--cluster`, otherwise only shows status for members listed in `--endpoints=xxx`.
