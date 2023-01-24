@@ -126,6 +126,14 @@ $ sudo ETCDCTL_API=3 etcdctl --cert=/etc/pki/tls/certs/cp1.example.com.pem --cac
 $ sudo ETCDCTL_API=3 etcdctl --cert=/etc/pki/tls/certs/cp1.example.com.pem --cacert=/etc/pki/ca-trust/extracted/pem/ca-bundle.pem --key=/etc/pki/tls/private/cp1.example.com.pem.key --endpoints=$ENDPOINTS del /registry/cert-manager.io/certificaterequests/xyz-system/ --prefix
 ```
 
+### Snapshot backup 
+
+etcd leader is guaranteed to have the latest application data, thus fetch snapshot from leader:
+
+```
+# etcdctl --endpoints=https://<leader node>:2379 snapshot save backup.db
+```
+
 ## Maintenance
 
 ### Reprovision a node
