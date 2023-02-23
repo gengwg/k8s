@@ -5,6 +5,12 @@
 # ./etcdctl-wrapper.sh endpoint status --cluster
 # ./etcdctl-wrapper.sh -w members list
 
+# Tested version
+# # export ETCDCTL_API=3
+# # etcdctl version
+#   etcdctl version: 3.3.11
+#   API version: 3.3
+
 ETCD_CERT_FILE="/var/lib/kubernetes/etcd.pem"
 ETCD_KEY_FILE="/var/lib/kubernetes/etcd.key"
 ETCD_TRUSTED_CA_FILE="/etc/pki/ca-trust/tls-ca-bundle.pem"
