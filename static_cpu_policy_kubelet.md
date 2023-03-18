@@ -232,3 +232,55 @@ kubelet[2519993]: E0312 17:38:33.985052 2519993 kubelet.go:1423] "Failed to star
 
 You forgot to remove the default none policy cpu state file.
     
+# Test exclusive CPUs?
+
+This may have demonstrated that the CPU manager policy in question enforces exclusivity among CPUs. (Possibly just testing Qos).
+
+## Static CPU manager policy
+
+First apply a 150-CPU pod:
+
+```
+[root@node0010 kubelet]# jq <  cpu_manager_state
+{
+  "policyName": "static",
+  "defaultCpuSet": "0,13-63,141-191",
+  "entries": {
+    "b761e594-0b6c-40e7-8dcf-bc45db599c19": {
+      "gengwg-test": "2-12,64-127,130-140,192-255"
+    },
+    "d633f2d8-f174-43b3-8713-0b80d38d9259": {
+      "node-exporter": "129"
+    },
+    "d6a85864-cf3f-45a3-baee-a9b3d5c2c4bc": {
+      "driver": "128",
+      "registrar": "1"
+    }
+  },
+  "checksum": 636988944
+}
+```
+
+Let's try schedule another 150-CPU pod on to the same node. Because `150 + 150 = 300 > 256`, it should fail. BUT should be admission error.
+
+```
+$ k get po gengwg-test2 -o wide -n gengwg -w
+NAME           READY   STATUS                     RESTARTS   AGE   IP       NODE                    NOMINATED NODE   READINESS GATES
+gengwg-test2   0/1     UnexpectedAdmissionError   0          11s   <none>   node0010   <none>           <none>
+```
+
+Describe the pod, gives you this reason:
+
+```
+  Warning  UnexpectedAdmissionError  102s  kubelet  Allocate failed due to not enough cpus available to satisfy request, which is unexpected
+```
+
+## Default CPU manager policy
+
+If you do the same to a non-static CPU manager policy, 2nd pod still fails, but different error, P654099922:
+
+```
+  Warning  OutOfcpu  28s   kubelet  Node didn't have enough resource: cpu, requested: 150000, used: 153450, capacity: 256000
+```
+
+This means it passed the Admission Control stage, but failed due to node doesn't have enough CPUs.
