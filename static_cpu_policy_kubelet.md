@@ -231,7 +231,27 @@ kubelet[2519993]: E0312 17:38:33.985052 2519993 kubelet.go:1423] "Failed to star
 ```
 
 You forgot to remove the default none policy cpu state file.
-    
+
+## Policy start error due to discrepancy between the configuration and CPU Manager state file
+
+```
+kubelet[804460]: E0321 12:01:49.139698  804460 cpu_manager.go:226] "Policy start error" err="not all reserved cpus: \"0-1,128-129\" are present in defaultCpuSet: \"0,75-128,131,203-255\""
+```
+
+When you change to a new CPU Manager policy or configure a different number of CPUs, the CPU Manager state database file needs to be cleared for it to restart.
+
+Delete the state database file:
+
+```
+# mv cpu_manager_state /tmp/
+```
+
+Restart kubelet
+
+```
+# systemctl restart kubelet
+```
+
 # Test exclusive CPUs?
 
 This may have demonstrated that the CPU manager policy in question enforces exclusivity among CPUs. (Possibly just testing Qos).
