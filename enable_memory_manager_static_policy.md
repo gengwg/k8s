@@ -25,7 +25,7 @@ reservedMemory:
       memory: "10496Mi"
 ```
 
-## Troubleshooting
+## Steps
 
 If you simply set memoryManagerPolicy to "Static", and nothing else:
 
@@ -142,6 +142,105 @@ reservedMemory:
 worked!
 
 
+Now let's try again, and reserve 4Gi for system, 512Mi for evictionHard.
+
+Each Numa node should reserve:
+
+```
+>>> (16*1024 +512 +1024*4 )/2
+10496.0
+```
+
+Resulted config:
+
+```
+memoryManagerPolicy: "Static"
+systemReserved:
+  memory: "4Gi"
+evictionHard:
+  memory.available: "512Mi"
+reservedMemory:
+  - numaNode: 0
+    limits:
+      memory: "10496Mi"
+  - numaNode: 1
+    limits:
+      memory: "10496Mi"
+```
+
+That's it.
+
+## Automation
+
+Each time you changed the memory policy config, you have to delete the db state file. This is manual and time consuming. 
+
+My current automation is to create a systemd dropin file, e.g. remove_memory_manager_state.conf to remove the state file before each restart of kubelet:
+
+```
+[Service]
+ExecStartPre=/usr/bin/rm -rf /var/lib/kubelet/memory_manager_state
+```
+
+One can test it like this:
+
+```
+# ll memory_manager_state
+-rw------- 1 root root 61 Mar 27 13:57 memory_manager_state
+# sudo systemctl restart kubelet
+# ll memory_manager_state
+ls: cannot access 'memory_manager_state': No such file or directory
+# ll memory_manager_state
+-rw------- 1 root root 61 Mar 27 13:57 memory_manager_state
+```
+
+Example Chef code:
+
+```
+# Set the path to the kubelet systemd directory.
+kubelet_systemd_dir = '/etc/systemd/system/kubelet.service.d/'
+
+# On CentOS 8 only, create the kubelet systemd directory.
+if node.centos8?
+  directory kubelet_systemd_dir do
+    owner  'root'
+    group  'root'
+    mode   '0755'
+  end
+
+  # Create a systemd drop-in configuration file to remove the memory_manager_state file pre-start
+  template "#{kubelet_systemd_dir}/remove_memory_manager_state.conf" do
+    source 'remove_memory_manager_state.conf.erb'
+    owner  'root'
+    group  'root'
+    mode   '0644'
+    action :create
+    notifies :run, 'systemd_reload[system instance]', :immediately
+    notifies :restart, 'service[kubelet]', :delayed
+  end
+end
+```
 
 
+### Tradeoffs of this implementation
 
+NOTE: These details pertain to version 1.22. I am uncertain if there have been improvements in version 1.26 at the time of writing.
+
+The concept is straightforward, but the implementation is not trivial.
+
+The idea is that each time the topology policy is modified, (e.g. changing Memories reserved, etc.) the state of the corresponding topology (CPU, memory) needs to be cleared. However, when using Chef for implementation, certain tradeoffs need to be made.
+
+With human intelligence, we would know whether we are modifying a topology policy or other components of the kubelet configuration and accordingly determine whether to remove the state file or not. However, Chef is not as intelligent (yet).
+
+You can clear the state at the following times:
+
+- Only when the policy name changes (e.g. none <--> static).
+  - It turns out that you need to clear the state when you change other components of the policy as well, such as reserving more memory or CPU.
+- At each Chef run.
+  - This works, but it's overkill to clear the state every 30 minutes.
+- When the kubelet config changes.
+  - In my opinion, this is the best balance so far.
+  - We probably haven't changed the kubelet config for a very long time, until recently when I started working on topology-aware scheduling.
+  - Even if the state gets cleared by changes other than the topology policy, it doesn't cause any damage, and the pods continue to run.
+- Only when the topology policy changes.
+  - This is the perfect case in theory, but it's not possible to implement it in reality.
+  - Essentially, you will be managing a state database using Chef! It's better to manage it using Golang/k8s.
