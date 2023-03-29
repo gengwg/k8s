@@ -304,3 +304,11 @@ If you do the same to a non-static CPU manager policy, 2nd pod still fails, but 
 ```
 
 This means it passed the Admission Control stage, but failed due to node doesn't have enough CPUs.
+
+## Misc
+
+If you create and delete the pods in short time, kubelet skips to update the status for the pod, simply using previous state.
+
+```
+I0321 18:49:25.300713 1571998 status_manager.go:671] "Pod was deleted and then recreated, skipping status update" pod="gengwg/gengwg-test" oldPodUID=8a0f38dd-47d1-4414-90ed-ffc2cd315afd podUID=09c030ad-3602-42d3-a887-a6a8f56598ee
+```
