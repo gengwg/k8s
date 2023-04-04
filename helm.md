@@ -97,6 +97,18 @@ kubectl apply -f k8s-myprom.yaml
 ls mydir/ | xargs -I  {} helm template . --set cluster=$(kubectl config current-context) -f  {}  | k apply -f -
 ```
 
+### Specify release name in Helm 3
+
+```
+$ helm template --release-name hpcc  -f values.yaml . | k apply -f -
+serviceaccount/hpcc-node-problem-detector created
+configmap/hpcc-node-problem-detector-custom-config created
+clusterrole.rbac.authorization.k8s.io/hpcc-node-problem-detector created
+clusterrolebinding.rbac.authorization.k8s.io/hpcc-node-problem-detector created
+Warning: spec.template.metadata.annotations[scheduler.alpha.kubernetes.io/critical-pod]: non-functional in v1.16+; use the "priorityClassName" field instead
+daemonset.apps/hpcc-node-problem-detector created
+```
+
 ### Install/uninstall chart into a specific namespace
 
 ```sh
