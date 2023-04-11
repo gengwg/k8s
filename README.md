@@ -1721,6 +1721,14 @@ traceroute to 2620:10d:c0aa:139::d5 (2620:10d:c0aa:139::d5), 30 hops max, 72 byt
  5  2620:10d:c0aa:139::d5 (2620:10d:c0aa:139::d5)  0.196 ms  0.187 ms  0.132 ms
 ```
 
+### Delete all PODs older than one day
+
+https://stackoverflow.com/questions/48934491/kubernetes-how-to-delete-pods-based-on-age-creation-time
+
+```
+kubectl get pods -A -o go-template --template '{{range .items}}{{.metadata.name}} {{.metadata.creationTimestamp}}{{"\n"}}{{end}}' | awk '$2 <= "'$(date -d 'yesterday' -Ins --utc | sed 's/+0000/Z/')'" { print $1 }' | xargs --no-run-if-empty kubectl delete pod
+```
+
 ## Troubleshooting
 
 ### `/data` directory permission issues
