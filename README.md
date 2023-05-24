@@ -1729,6 +1729,39 @@ https://stackoverflow.com/questions/48934491/kubernetes-how-to-delete-pods-based
 kubectl get pods -A -o go-template --template '{{range .items}}{{.metadata.name}} {{.metadata.creationTimestamp}}{{"\n"}}{{end}}' | awk '$2 <= "'$(date -d 'yesterday' -Ins --utc | sed 's/+0000/Z/')'" { print $1 }' | xargs --no-run-if-empty kubectl delete pod
 ```
 
+### Check DNS
+
+On one terminal:
+
+```
+$ k exec -it dnsutils -- nslookup google.com
+Server:		fdf5:6da1:fe0d:cc1e::a
+Address:	fdf5:6da1:fe0d:cc1e::a#53
+
+Non-authoritative answer:
+Name:	google.com
+Address: 142.251.163.138
+....
+Name:	google.com
+Address: 2607:f8b0:4004:c09::8a
+Name:	google.com
+Address: 2607:f8b0:4004:c09::71
+```
+
+On another terminal:
+
+```
+$ kubectl logs -f --namespace=kube-system -l k8s-app=coredns  | grep google
+[INFO] [2620:10d:c0aa:11c::19]:56913 - 50775 "A IN google.com.gengwg.svc.cluster.local. udp 64 true 2048" NXDOMAIN qr,aa,rd 146 0.000075853s
+[INFO] [2620:10d:c0aa:11c::19]:54836 - 27046 "A IN google.com.svc.cluster.local. udp 46 false 512" NXDOMAIN qr,aa,rd 139 0.000033824s
+[INFO] [2620:10d:c0aa:11c::19]:40287 - 55396 "A IN google.com.thefacebook.com. udp 55 true 2048" NXDOMAIN qr,aa,rd,ra 150 0.000376323s
+[INFO] [2620:10d:c0aa:11c::19]:36155 - 43950 "A IN google.com.cluster.local. udp 42 false 512" NXDOMAIN qr,aa,rd 135 0.000499693s
+[INFO] [2620:10d:c0aa:11c::19]:49931 - 35994 "A IN google.com.fb.com. udp 46 true 2048" NXDOMAIN qr,rd,ra 121 0.008401947s
+[INFO] [2620:10d:c0aa:11c::19]:38986 - 17567 "A IN google.com.corp.tfbnw.net. udp 54 true 2048" NXDOMAIN qr,aa,rd,ra 150 0.00065839s
+[INFO] [2620:10d:c0aa:11c::19]:34564 - 52910 "A IN google.com. udp 39 true 2048" NOERROR qr,rd,ra 195 0.000428672s
+[INFO] [2620:10d:c0aa:11c::19]:44958 - 3080 "AAAA IN google.com. udp 39 true 2048" NOERROR qr,rd,ra 191 0.000348089s
+```
+
 ## Troubleshooting
 
 ### `/data` directory permission issues
