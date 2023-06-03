@@ -1,0 +1,41 @@
+# Test deployment with topology Spread Constraints
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine-deployment
+  labels:
+    app: alpine
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: alpine
+  template:
+    metadata:
+      labels:
+        app: alpine
+    spec:
+      priorityClassName: high
+      containers:
+      - image: dtr.example.com/gengwg/alpine
+        command:
+          - /bin/sh
+          - "-c"
+          - "sleep 60m"
+        imagePullPolicy: IfNotPresent
+        name: alpine
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+          limits:
+            cpu: 1
+            memory: 1Gi
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app: alpine
+        maxSkew: 1
+        # topologyKey: mylabel
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
