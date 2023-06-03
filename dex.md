@@ -63,6 +63,19 @@ $ cat .kube/config | grep id-token
 
 Then use JWT tools to decode the id-token.
 
+### API Server configs for dex/oidc openID connect tokens
+
+```
+$ sudo cat /etc/systemd/system/kube-apiserver.service | grep oidc
+  --oidc-issuer-url=https://mydex.myco.com/dex \
+  --oidc-client-id=loginapp \
+  --oidc-ca-file=/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem \
+  --oidc-username-claim=name \
+  --oidc-groups-claim=groups \
+```
+
+NOTE: If a claim other than “email” is used for username, for example “sub”, it will be prefixed by "(value of --oidc-issuer-url)#". This is to namespace user controlled claims which may be used for privilege escalation.
+
 ## Tutorials
 
 ### Store Dex state in etcd database to ensure high availability and scalability
