@@ -1762,6 +1762,28 @@ $ kubectl logs -f --namespace=kube-system -l k8s-app=coredns  | grep google
 [INFO] [2620:10d:c0aa:11c::19]:44958 - 3080 "AAAA IN google.com. udp 39 true 2048" NOERROR qr,rd,ra 191 0.000348089s
 ```
 
+### Compare a yaml diff with currently running one without applying 
+
+```
+$ k apply -f alpine.yaml
+pod/gengwg-test configured
+$ k get -f alpine.yaml
+NAME          READY   STATUS      RESTARTS   AGE
+gengwg-test   0/1     Completed   0          8d
+$ vim alpine.yaml
+$ k diff -f alpine.yaml
+diff -u -N /tmp/LIVE-3910808776/v1.Pod.default.gengwg-test /tmp/MERGED-3995319186/v1.Pod.default.gengwg-test
+--- /tmp/LIVE-3910808776/v1.Pod.default.gengwg-test	2023-06-03 12:06:49.757486926 -0700
++++ /tmp/MERGED-3995319186/v1.Pod.default.gengwg-test	2023-06-03 12:06:49.759486939 -0700
+@@ -130,7 +130,7 @@
+     - /bin/sh
+     - -c
+     - sleep 6000m
+-    image: dtr.example.com/gengwg/alpine
++    image: dtr.example.com/gengwg/cuda:11.0-base
+     imagePullPolicy: IfNotPresent
+```
+
 ## Troubleshooting
 
 ### `/data` directory permission issues
