@@ -1,4 +1,71 @@
-## Store Dex state in etcd database to ensure high availability and scalability
+## Notes
+
+Dex Allow User to Securely Authenticate (LDAP) and Generate OAUTH2 Token which can be used to apply Kubernetes RBAC. Anyone with a valid unix account to be able to login to our kubernetes clusters via 'kubectl_login'.
+
+## Commands
+
+### Verify Dex server working or not
+
+A working Dex server should be like this:
+
+```
+gengwg@gengwg-mbp:~$ curl https://mydex.myco.com/dex/.well-known/openid-configuration
+{
+  "issuer": "https://mydex.myco.com/dex",
+  "authorization_endpoint": "https://mydex.myco.com/dex/auth",
+  "token_endpoint": "https://mydex.myco.com/dex/token",
+  "jwks_uri": "https://mydex.myco.com/dex/keys",
+  "userinfo_endpoint": "https://mydex.myco.com/dex/userinfo",
+  "device_authorization_endpoint": "https://mydex.myco.com/dex/device/code",
+  "grant_types_supported": [
+    "authorization_code",
+    "refresh_token",
+    "urn:ietf:params:oauth:grant-type:device_code"
+  ],
+  "response_types_supported": [
+    "code"
+  ],
+  "subject_types_supported": [
+    "public"
+  ],
+  "id_token_signing_alg_values_supported": [
+    "RS256"
+  ],
+  "scopes_supported": [
+    "openid",
+    "email",
+    "groups",
+    "profile",
+    "offline_access"
+  ],
+  "token_endpoint_auth_methods_supported": [
+    "client_secret_basic"
+  ],
+  "claims_supported": [
+    "aud",
+    "email",
+    "email_verified",
+    "exp",
+    "iat",
+    "iss",
+    "locale",
+    "name",
+    "sub"
+  ]
+}
+```
+
+### Checking bearer token for dex:
+
+```
+$ cat .kube/config | grep id-token
+```
+
+Then use JWT tools to decode the id-token.
+
+## Tutorials
+
+### Store Dex state in etcd database to ensure high availability and scalability
 
 Dex is an identity provider that specializes in OpenID Connect and OAuth2. However, it is important to note that Dex is not completely stateless. For instance, user data, client information, tokens, and other crucial data utilized in the authentication process are securely stored by Dex. In our present configuration, we store this state in the memory of the local instance in-memory datastore. Unfortunately, this limitation prevents us from running more than 1 replica since multiple instances would result in inconsistent data.
 
