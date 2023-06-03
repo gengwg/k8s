@@ -1784,6 +1784,32 @@ diff -u -N /tmp/LIVE-3910808776/v1.Pod.default.gengwg-test /tmp/MERGED-399531918
      imagePullPolicy: IfNotPresent
 ```
 
+### Client vs server side dry run
+
+```
+      --dry-run='none': Must be "none", "server", or "client". If client strategy, only print the object that would be
+sent, without sending it. If server strategy, submit server-side request without persisting the resource.
+```
+
+We change the pod yaml to use a non-exist namespace:
+
+```
+metadata:
+  name: gengwg-test
+  # namespace: gengwg
+  namespace: notexit
+```
+
+```
+# dry run on client side
+$ kaf alpine.yaml --dry-run=client
+pod/gengwg-test created (dry run)
+
+# dry run on server side
+$ kaf alpine.yaml --dry-run=server
+Error from server (NotFound): error when creating "alpine.yaml": namespaces "notexit" not found
+```
+
 ## Troubleshooting
 
 ### `/data` directory permission issues
