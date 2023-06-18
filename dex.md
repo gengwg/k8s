@@ -2,6 +2,8 @@
 
 Dex Allow User to Securely Authenticate (LDAP) and Generate OAUTH2 Token which can be used to apply Kubernetes RBAC. Anyone with a valid unix account to be able to login to our kubernetes clusters via 'kubectl_login'.
 
+ID tokens are normally intended for sing-on, access tokens for calling protected APIs.
+
 ## Commands
 
 ### Verify Dex server working or not
