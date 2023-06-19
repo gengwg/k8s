@@ -57,3 +57,15 @@ $ https_proxy="http://fwdproxy:8080" k deprecations --k8s-version=v1.26.0
 ```
 
 [example](https://gist.github.com/gengwg/2abcf404109d218fb2fd908e9f526c0a)
+
+### Tree
+
+```
+$ k tree deploy alpine-deployment
+NAMESPACE  NAME                                        READY  REASON  AGE
+default    Deployment/alpine-deployment                -              15m
+default    └─ReplicaSet/alpine-deployment-6bc7894dbc   -              15m
+default      ├─Pod/alpine-deployment-6bc7894dbc-6cvbn  True           15m
+default      ├─Pod/alpine-deployment-6bc7894dbc-6r4zq  True           15m
+default      └─Pod/alpine-deployment-6bc7894dbc-7c6mt  True           15m
+```
