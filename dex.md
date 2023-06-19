@@ -256,3 +256,45 @@ spec:
     matchLabels:
       app: dex
 ```
+
+## Troubleshooting
+
+### exec format error
+
+```
+$ k get po
+NAME                   READY   STATUS             RESTARTS     AGE
+dex-5c5bfc6856-rgrkt   0/1     CrashLoopBackOff   1 (9s ago)   16s
+dex-744f757cc6-bc4gr   1/1     Running            0            2m31s
+dex-744f757cc6-c2bcn   1/1     Running            0            2m25s
+dex-744f757cc6-lnxm5   1/1     Running            0            2m29s
+$ k logs dex-5c5bfc6856-rgrkt
+exec /usr/local/bin/dex: exec format error
+```
+
+This is due to the pull/pushed image is arm need pull amd64.
+
+```
+$ docker pull --platform=linux/amd64  ghcr.io/dexidp/dex:v2.35.0
+$ docker tag ghcr.io/dexidp/dex:v2.35.0 harbor.my.com/ghcr.io/dex:v2.35.0
+$ docker push harbor.my.com/ghcr.io/dex:v2.35.0
+```
+
+(Possibly also need purge images on the worker nodes, due to imagePullPolicy.)
+
+Now good:
+
+```
+$ k tree deploy dex
+NAMESPACE  NAME                          READY  REASON  AGE
+auth	   Deployment/dex                -              11m
+auth	   ├─ReplicaSet/dex-584c98d68f   -              11m
+auth	   ├─ReplicaSet/dex-5c5bfc6856   -              6m15s
+auth	   ├─ReplicaSet/dex-68d469ff8b   -              2m50s
+auth	   ├─ReplicaSet/dex-744f757cc6   -              8m30s
+auth	   └─ReplicaSet/dex-755d478747   -              28s
+auth	     ├─Pod/dex-755d478747-6mk5z  True           28s
+auth	     ├─Pod/dex-755d478747-7mgp9  True           21s
+auth	     └─Pod/dex-755d478747-ffmdc  True           15s
+```
+
