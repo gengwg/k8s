@@ -298,3 +298,82 @@ auth	     ├─Pod/dex-755d478747-7mgp9  True           21s
 auth	     └─Pod/dex-755d478747-ffmdc  True           15s
 ```
 
+### AuthCode CRD validation failed.
+
+```
+$ k apply -f kubernetes/clusters/dev/dex.yaml
+namespace/auth unchanged
+error: error validating "kubernetes/clusters/dev/dex.yaml": error validating data: [ValidationError(CustomResourceDefinition.spec): unknown field "version" in io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.CustomResourceDefinitionSpec, ValidationError(CustomResourceDefinition.spec): missing required field "versions" in io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.CustomResourceDefinitionSpec]; if you choose to ignore these errors, turn validation off with --validate=false
+```
+
+This is due to K8s upgraded and CRD API changed. Using [latest CRD](https://github.com/dexidp/dex/blob/master/scripts/manifests/crds/authcodes.yaml) from official repo fixed it.
+
+```
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: authcodes.dex.coreos.com
+spec:
+  group: dex.coreos.com
+  names:
+    kind: AuthCode
+    listKind: AuthCodeList
+    plural: authcodes
+    singular: authcode
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+```
+
+A few core APIs also changed. Simply check the latest api versions:
+
+```
+$ k diff -f kubernetes/clusters/dev/dex.yaml
+error: unable to recognize "kubernetes/clusters/dev/dex.yaml": no matches for kind "CustomResourceDefinition" in version "apiextensions.k8s.io/v1beta1"
+$ k api-resources  | grep apiex
+customresourcedefinitions         crd,crds                      apiextensions.k8s.io/v1                  false        CustomResourceDefinition
+
+$ k diff -f kubernetes/clusters/dev/dex.yaml
+error: unable to recognize "kubernetes/clusters/dev/dex.yaml": no matches for kind "ClusterRole" in version "rbac.authorization.k8s.io/v1beta1"
+$ k api-resources  | grep clusterroles
+clusterroles                                                    rbac.authorization.k8s.io/v1             false        ClusterRole
+```
+
+Final Cluster role (binding) looks like this:
+
+```
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dex
+rules:
+- apiGroups: ["dex.coreos.com"] # API group created by dex
+  resources: ["*"]
+  verbs: ["*"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["create"] # To manage its own resources identity must be able to create customresourcedefinitions.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dex
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dex
+subjects:
+- kind: ServiceAccount
+  name: dex                 # Service account assigned to the dex pod.
+  namespace: auth           # The namespace dex is running in.
+- kind: Group
+  name: system:nodes        # access to system:nodes group on dex.coreos.com apis
+  namespace: auth
+```
