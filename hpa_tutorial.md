@@ -239,6 +239,34 @@ status:
   lastScaleTime: "2023-06-19T23:20:50Z"
 ```
 
+View the events:
+
+```
+$ k describe hpa php-apache
+Name:                                                  php-apache
+Namespace:                                             gengwg
+Labels:                                                <none>
+Annotations:                                           <none>
+CreationTimestamp:                                     Mon, 19 Jun 2023 16:17:05 -0700
+Reference:                                             Deployment/php-apache
+Metrics:                                               ( current / target )
+  resource cpu on pods  (as a percentage of request):  72% (144m) / 50%
+Min replicas:                                          1
+Max replicas:                                          10
+Deployment pods:                                       7 current / 7 desired
+Conditions:
+  Type            Status  Reason              Message
+  ----            ------  ------              -------
+  AbleToScale     True    ReadyForNewScale    recommended size matches current size
+  ScalingActive   True    ValidMetricFound    the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  False   DesiredWithinRange  the desired count is within the acceptable range
+Events:
+  Type    Reason             Age                From                       Message
+  ----    ------             ----               ----                       -------
+  Normal  SuccessfulRescale  79s (x2 over 71m)  horizontal-pod-autoscaler  New size: 4; reason: cpu resource utilization (percentage of request) above target
+  Normal  SuccessfulRescale  19s (x2 over 70m)  horizontal-pod-autoscaler  New size: 7; reason: cpu resource utilization (percentage of request) above target
+```
+
 ## Step 7: Stop the load
 
 
