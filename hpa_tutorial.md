@@ -265,6 +265,17 @@ Events:
   ----    ------             ----               ----                       -------
   Normal  SuccessfulRescale  79s (x2 over 71m)  horizontal-pod-autoscaler  New size: 4; reason: cpu resource utilization (percentage of request) above target
   Normal  SuccessfulRescale  19s (x2 over 70m)  horizontal-pod-autoscaler  New size: 7; reason: cpu resource utilization (percentage of request) above target
+
+$ k describe deploy php-apache
+....
+
+Events:
+  Type    Reason             Age                 From                   Message
+  ----    ------             ----                ----                   -------
+  Normal  ScalingReplicaSet  39m (x2 over 109m)  deployment-controller  Scaled up replica set php-apache-65dc947646 to 4
+  Normal  ScalingReplicaSet  38m (x2 over 108m)  deployment-controller  Scaled up replica set php-apache-65dc947646 to 7
+  Normal  ScalingReplicaSet  31m                 deployment-controller  Scaled down replica set php-apache-65dc947646 to 4
+  Normal  ScalingReplicaSet  31m (x2 over 100m)  deployment-controller  Scaled down replica set php-apache-65dc947646 to 1
 ```
 
 ## Step 7: Stop the load
