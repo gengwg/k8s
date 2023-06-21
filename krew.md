@@ -83,3 +83,17 @@ default      ├─Pod/alpine-deployment-6bc7894dbc-6cvbn  True           15m
 default      ├─Pod/alpine-deployment-6bc7894dbc-6r4zq  True           15m
 default      └─Pod/alpine-deployment-6bc7894dbc-7c6mt  True           15m
 ```
+
+### Slice a big yaml into separate components
+
+```
+$ k slice -f coredns.yaml -o ./test
+$ tree test/
+test/
+├── clusterrolebinding-system:coredns.yaml
+├── clusterrole-system:coredns.yaml
+├── configmap-coredns.yaml
+├── deployment-coredns.yaml
+├── serviceaccount-coredns.yaml
+└── service-coredns.yaml
+```
