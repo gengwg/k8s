@@ -29,6 +29,7 @@ kubectl krew install access-matrix
 ## Plugins
 
 ```
+kubectl krew install allctx
 kubectl krew install access-matrix
 kubectl krew install auth-proxy
 kubectl krew install blame
@@ -38,6 +39,7 @@ kubectl krew install confirm
 kubectl krew install cost
 kubectl krew install custom-cols
 deprecations
+kubectl krew install get-all
 kubectl krew install ingress-enginx
 kubectl krew install kyverno
 minio
