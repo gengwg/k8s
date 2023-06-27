@@ -1990,6 +1990,24 @@ pod "kube-dns-2928dhhh3w7-7qljt" evicted
 
 It is possible that the pod(s) does not exist anymore and it stucks in 'terminating' state. You can find that pod using command `kubectl get pods -o wide --all-namespaces | grep <node_name>`. If so force delete that pod, then drain will continue.
 
+### Error from server: etcdserver: request timed out
+
+```
+k get po -n kube-system
+Error from server: etcdserver: request timed out
+```
+
+The issue arose when one of the etcd servers went offline. However, once the problematic etcd server was resolved, the command worked.
+
+```
+[root@controller01 ~]# etcdrun endpoint health
+https://controller01.my.com:2379 is healthy: successfully committed proposal: took = 1.073141ms
+https://controller03.my.com:2379 is healthy: successfully committed proposal: took = 2.341884ms
+https://controller02.my.com:2379 is unhealthy: failed to connect: context deadline exceeded
+Error: unhealthy cluster
+```
+
+
 ## Resources
 
 - https://github.com/kelseyhightower/kubernetes-the-hard-way
