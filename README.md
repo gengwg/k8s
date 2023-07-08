@@ -1486,6 +1486,15 @@ kubectl run busybox --image=busybox -it --restart=Never -- /bin/sh -c 'echo hell
 kubectl run busybox --image=busybox -it --rm --restart=Never -- /bin/sh -c 'echo hello world'
 ```
 
+### Run a command using kubectl
+
+For example, here's a handy trick that allows you to execute any version of Python using kubectl. You just need replace the python image with your own.
+
+```
+$ kubectl run -it --rm --image=hbr.my.com/gengwg/python:3.8 --restart=Never mypython -- python -c 'print("Hello World")'
+Hello World
+```
+
 ### Create a deployment that will accept traffic on port 80 with 2 replicas 
 
 ```
