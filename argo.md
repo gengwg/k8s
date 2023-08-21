@@ -190,3 +190,91 @@ hello-world-5p8f4:           \____\______/
 hello-world-5p8f4: time="2023-08-08T01:16:01.852Z" level=info msg="sub-process exited" argo=true error="<nil>"
 ```
 
+# Troubleshooting
+
+## Fix Argo executor image 
+
+```
+  Normal   Pulling                 21s   kubelet                  Pulling image "quay.io/argoproj/argoexec:v3.4.8"
+  Warning  Failed                  6s    kubelet                  Failed to pull image "quay.io/argoproj/argoexec:v3.4.8": rpc error: code = Unknown desc = Error response from daemon: Get "https://quay.io/v2/": net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+  Warning  Failed                  6s    kubelet                  Error: ErrImagePull
+  Normal   BackOff                 6s    kubelet                  Back-off pulling image "quay.io/argoproj/argoexec:v3.4.8"
+  Warning  Failed                  6s    kubelet                  Error: ImagePullBackOff
+```
+
+The executor image is unaccessible from internal network.
+
+First push that image to internal registry
+
+```
+gengwg@gengwg-mbp:~$ docker pull --platform=linux/amd64 quay.io/argoproj/argoexec:v3.4.8
+gengwg@gengwg-mbp:~$ docker tag quay.io/argoproj/argoexec:v3.4.8 hbr.my.com/gengwg/argoexec:v3.4.8
+gengwg@gengwg-mbp:~$ docker push hbr.my.com/gengwg/argoexec:v3.4.8
+```
+
+```
+$ vim argo-install.yaml
+....
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workflow-controller
+  namespace: argo
+spec:
+  selector:
+    matchLabels:
+      app: workflow-controller
+  template:
+    metadata:
+      labels:
+        app: workflow-controller
+    spec:
+      containers:
+      #- args: []
+      - args:
+        - --executor-image
+        - quay.io/argoproj/argoexec:latest # change to internal image: hbr.my.com/gengwg/argoexec:v3.4.8
+        command:
+....
+```
+
+Then reapply:
+
+```
+$ kaf argo-install.yaml
+```
+
+Need patch again since it's a new deployment. otherwise get:
+
+```
+If your organisation has configured client authentication, get your token following this instructions from here and paste in this box:
+```
+
+```
+$ kubectl patch deployment \
+>   argo-server \
+>   --namespace argo \
+>   --type='json' \
+>   -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/args", "value": [
+>   "server",
+>   "--auth-mode=server"
+> ]}]'
+
+deployment.apps/argo-server patched
+```
+
+Now same workflow as on laptop:
+
+```
+$ kubectl -n argo port-forward deployment/argo-server 2746:2746
+```
+
+You can see  the jobs all succeeded:
+
+```
+$ k get po -n gengwg | grep ip
+ip-processing-dag-82b5g-delete-779236722      0/2     Completed               0               39s
+ip-processing-dag-82b5g-generate-2784098314   0/2     Completed               0               93s
+ip-processing-dag-82b5g-process-1879190736    0/2     Completed               0               60s
+```
