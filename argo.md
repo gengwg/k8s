@@ -190,6 +190,72 @@ hello-world-5p8f4:           \____\______/
 hello-world-5p8f4: time="2023-08-08T01:16:01.852Z" level=info msg="sub-process exited" argo=true error="<nil>"
 ```
 
+# Test
+
+```
+$ cat argo-workflow-example.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: ip-processing-dag-
+  namespace: gengwg
+spec:
+  entrypoint: data-processing-example
+  volumeClaimTemplates:                 # define volume, same syntax as Kubernetes pod spec
+  - metadata:
+      name: workdir                     # name of volume claim
+      labels:
+        oncall: my_oncall
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi                  # Gi => 1024 * 1024 * 1024
+      storageClassName: mysc-system
+
+  templates:
+  - name: data-processing-example
+    dag:
+      tasks:
+        - name: generate-ips
+          template: generate
+        - name: process-ips
+          template: process
+          dependencies:
+            - generate-ips
+        - name: delete-ips
+          template: delete
+          dependencies:
+            - process-ips
+
+  - name: generate
+    container:
+      image: hbr.my.com/my/whalesay:latest
+      command: [sh, -c]
+      args: ['for i in {1..100}; do echo "192.168.0.$i" >> /mnt/vol/ips.txt; echo "192.168.0.$i" >> /mnt/vol/ips.txt; done']
+      volumeMounts:
+      - name: workdir
+        mountPath: /mnt/vol
+
+  - name: process
+    container:
+      image: hbr.my.com/gengwg/alpine
+      command: [ sh, -c ]
+      args: [ 'cat /mnt/vol/ips.txt | sort | uniq -d' ]
+      volumeMounts:
+        - name: workdir
+          mountPath: /mnt/vol
+
+  - name: delete
+    container:
+      image: hbr.my.com/gengwg/alpine
+      command: [sh, -c]
+      args: ["echo deleting file from volume; find /mnt/vol; rm /mnt/vol/ips.txt"]
+      volumeMounts:                     # same syntax as Kubernetes pod spec
+      - name: workdir
+        mountPath: /mnt/vol
+```
+
 # Troubleshooting
 
 ## Fix Argo executor image 
