@@ -58,6 +58,18 @@ $ helm repo add prometheus-community https://prometheus-community.github.io/helm
 "prometheus-community" has been added to your repositories
 ```
 
+List helm repositories:
+
+```
+helm repo ls
+```
+
+Dry run:
+
+```
+helm install myprom prometheus-community/prometheus-mysql-exporter  --dry-run
+```
+
 ### Uninstall chart release
 
 ```
@@ -215,4 +227,40 @@ Some examples:
 ```
 3s          Warning   FailedCreate        job/myprom-admission-create                       Error creating: pods "myprom-admission-create--1-" is forbidden: no PriorityClass with name high was found
 ```
+
+### 
+
+```
+helm push secondchart-0.1.0.tgz  oci://localhost:5000/helm-charts
+
+Error: unknown command "push" for "helm"
+
+Did you mean this?
+	pull
+
+Run 'helm --help' for usage.
+➜  udemy-helm-kubernetes-packaging-manager-for-developers-and-devops git:(master) ✗
+```
+
+Helm verison too old:
+
+```
+helm version
+version.BuildInfo{Version:"v3.3.4", GitCommit:"a61ce5633af99708171414353ed49547cf05013d", GitTreeState:"clean", GoVersion:"go1.14.9"}
+
+sudo rm -f /usr/local/sbin/helm
+sudo dnf install helm
+
+which helm
+/usr/bin/helm
+
+helm version
+version.BuildInfo{Version:"v3.19.0", GitCommit:"3d8990f0836691f0229297773f3524598f46bda6", GitTreeState:"clean", GoVersion:"go1.25rc2 X:nodwarf5"}
+
+helm push secondchart-0.1.0.tgz  oci://localhost:5000/helm-charts
+
+Pushed: localhost:5000/helm-charts/secondchart:0.1.0
+Digest: sha256:d352a7befcb6722fb13945e373694f038b694049a1dc9a285556d41e491f6f78
+```
+
 
