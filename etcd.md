@@ -236,7 +236,7 @@ Otherwise you will get error. This is due to previous run was saying 'new', thus
 2022-12-22 14:05:59.004285 E | rafthttp: request cluster ID mismatch (got c3c2b7a6a9f4b1f1 want a0ffb967612c7688)
 ```
 
-May also Need remove previous data dir, if you previously already started etcd on it using 'new'. Otherwise it still gets the old cluste id.
+May also Need remove previous data dir, if you previously already started etcd on it using 'new'. Otherwise it still gets the old cluster id.
 
 ```
 # mv /var/lib/etcd/default.etcd/ /tmp/

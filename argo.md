@@ -78,46 +78,6 @@ sudo mv ./argo-darwin-amd64 /usr/local/bin/argo
 # Test installation
 argo version
 
-gengwg@gengwg-mbp:~$ curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.4.8/argo-darwin-amd64.gz
-
-# Unzip
-gunzip argo-darwin-amd64.gz
-
-# Make binary executable
-chmod +x argo-darwin-amd64
-
-# Move binary to path
-sudo mv ./argo-darwin-amd64 /usr/local/bin/argo
-
-# Test installation
-argo version
-
-
-gengwg@gengwg-mbp:~$ # Download the binary
-gengwg@gengwg-mbp:~$ curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.4.8/argo-darwin-amd64.gz
-
-# Unzip
-gunzip argo-darwin-amd64.gz
-
-# Make binary executable
-chmod +x argo-darwin-amd64
-
-# Move binary to path
-sudo mv ./argo-darwin-amd64 /usr/local/bin/argo
-
-# Test installation
-argo version
-gengwg@gengwg-mbp:~$
-gengwg@gengwg-mbp:~$ # Unzip
-gengwg@gengwg-mbp:~$ gunzip argo-darwin-amd64.gz
-gengwg@gengwg-mbp:~$
-gengwg@gengwg-mbp:~$ # Make binary executable
-gengwg@gengwg-mbp:~$ chmod +x argo-darwin-amd64
-gengwg@gengwg-mbp:~$
-gengwg@gengwg-mbp:~$ # Move binary to path
-gengwg@gengwg-mbp:~$ sudo mv ./argo-darwin-amd64 /usr/local/bin/argo
-gengwg@gengwg-mbp:~$
-gengwg@gengwg-mbp:~$ # Test installation
 gengwg@gengwg-mbp:~$ argo version
 argo: v3.4.8
   BuildDate: 2023-05-25T23:14:36Z

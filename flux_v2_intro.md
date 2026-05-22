@@ -1,4 +1,4 @@
-This is an tutorial for using Flux with KIND cluster and Github on your laptop.
+This is a tutorial for using Flux with KIND cluster and Github on your laptop.
 
 Flux, by weaveworks, is a GitOps Kubernetes Operator that ensures that your cluster state matches the desired state described in a git repository.
 

@@ -242,7 +242,7 @@ Run 'helm --help' for usage.
 ➜  udemy-helm-kubernetes-packaging-manager-for-developers-and-devops git:(master) ✗
 ```
 
-Helm verison too old:
+Helm version too old:
 
 ```
 helm version

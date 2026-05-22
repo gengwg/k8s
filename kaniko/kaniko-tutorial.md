@@ -1,4 +1,4 @@
-This is an tutorial/example for building Docker images and pushing to image registry inside the Kubernetes cluster using Kaniko.
+This is a tutorial/example for building Docker images and pushing to image registry inside the Kubernetes cluster using Kaniko.
 
 # Minikube + Public Docker Hub
 

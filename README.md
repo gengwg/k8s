@@ -14,7 +14,7 @@ Cluster DNS is a DNS server, in addition to the other DNS server(s) in your envi
 * Containerd
 * CRIO
 
-### Alpline hello world example
+### Alpine hello world example
 
 ```
 $ kubectl apply -f alpine2.yml
@@ -887,7 +887,7 @@ do
 done
 ```
 
-### Sepcifying your own Cluster IP address
+### Specifying your own Cluster IP address
 
 Cluster IP is a virtual IP that is allocated by the K8s to a service. It is K8s internal IP.
 A Cluster IP makes it accessible from any of the Kubernetes cluster’s nodes.
@@ -1093,10 +1093,10 @@ kubectl edit pod redis
 ### Scale replica set
 
 ```
-# modify `replicas: 3` in the replicaset defition yaml, then replace the original replicaset:
-kubectl replace -f replicaset.defition.yaml
+# modify `replicas: 3` in the replicaset definition yaml, then replace the original replicaset:
+kubectl replace -f replicaset-definition.yaml
 
-kubectl scale --replicas=3 -f replicaset-defition.yaml
+kubectl scale --replicas=3 -f replicaset-definition.yaml
 
 # specify type and name of the replica set.
 kubectl scale --replicas=3 replicaset myapp-replicaset
@@ -1307,7 +1307,7 @@ kubectl get events -A --sort-by=.metadata.creationTimestamp
 
 ### Check the recent events in a namespace
 
-Very useful for debgging.
+Very useful for debugging.
 
 ```
 kubectl -n myns get events --sort-by='{.lastTimestamp}'
