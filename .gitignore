@@ -24,3 +24,20 @@ _testmain.go
 *.prof
 
 *.vagrant
+
+# Security sensitive files
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cert
+kubeconfig
+.env
+.aws/
+.gcp/
+.ssh/
+*.cred
+credentials
+*.dockercfg
+.docker/config.json
